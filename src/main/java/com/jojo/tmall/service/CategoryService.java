@@ -11,6 +11,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CategoryService {
@@ -33,5 +34,31 @@ public class CategoryService {
         Pageable pageable = new PageRequest(start, size,sort);
         Page pageFromJPA =categoryDAO.findAll(pageable);
         return new Page4Navigator<Category>(pageFromJPA,navigatePages); //TODO:<>里写Category与不写的区别
+    }
+
+    public void add(Category category) {
+        categoryDAO.save(category);
+    }
+
+    public void delete(int id) {
+        categoryDAO.deleteById(id);
+    }
+
+    /**
+     * Optional类是一个可以为null的容器对象
+     * 如果值存在则isPresent()方法会返回true，调用get()方法会返回该对象
+     * Optional 是个容器：它可以保存类型T的值，或者仅仅保存null
+     * Optional提供很多有用的方法，这样我们就不用显式进行空值检测
+     * Optional 类的引入很好的解决空指针异常
+     * @param id
+     * @return
+     */
+    public Optional<Category> get(int id) {
+        Optional<Category> c= categoryDAO.findById(id);
+        return c;
+    }
+
+    public void update(Category category) {
+        categoryDAO.save(category);
     }
 }
