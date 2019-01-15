@@ -11,7 +11,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class CategoryService {
@@ -31,7 +30,7 @@ public class CategoryService {
 
     public Page4Navigator<Category> list(int start, int size, int navigatePages){
         Sort sort = new Sort(Sort.Direction.DESC, "id");
-        Pageable pageable = new PageRequest(start, size,sort);
+        Pageable pageable = new PageRequest(start, size, sort);
         Page pageFromJPA =categoryDAO.findAll(pageable);
         return new Page4Navigator<Category>(pageFromJPA,navigatePages); //TODO:<>里写Category与不写的区别
     }
@@ -53,9 +52,9 @@ public class CategoryService {
      * @param id
      * @return
      */
-    public Optional<Category> get(int id) {
-        Optional<Category> c= categoryDAO.findById(id);
-        return c;
+    public Category get(int id) {
+        Category category = categoryDAO.getOne(id);
+        return category;
     }
 
     public void update(Category category) {

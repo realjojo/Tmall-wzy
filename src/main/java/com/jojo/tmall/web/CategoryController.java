@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.Optional;
 
 @RestController
 public class CategoryController {
@@ -64,8 +63,8 @@ public class CategoryController {
     }
 
     @GetMapping("/categories/{id}")
-    public Optional<Category> get(@PathVariable("id") int id) throws Exception {
-        Optional<Category> bean = categoryService.get(id);
+    public Category get(@PathVariable("id") int id) throws Exception {
+        Category bean = categoryService.get(id);
         return bean;
     }
 
