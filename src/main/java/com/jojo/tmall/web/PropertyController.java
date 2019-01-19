@@ -6,6 +6,8 @@ import com.jojo.tmall.util.Page4Navigator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 public class PropertyController {
 
@@ -17,6 +19,12 @@ public class PropertyController {
         start = start < 0 ? 0 : start;
         Page4Navigator<Property> page = propertyService.list(cid, start, size, 5);
         return page;
+    }
+
+    @GetMapping("/categories/{cid}/all_properties")
+    public List<Property> getAll(@PathVariable("cid") int cid) {
+        List<Property> propertyList = propertyService.getAll(cid);
+        return propertyList;
     }
 
     @GetMapping("/properties/{id}")

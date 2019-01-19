@@ -5,32 +5,32 @@
 <body>
 <div th:replace="include/admin/adminNavigator::html" ></div>
 <script>
-    $(function(){
+    $(function() {
         var data4Vue = {
             uri: 'properties',
-            listURL:'admin_property_list',
-            bean: { id: 0, name: '', category: {id: 0} }
+            listURL: 'admin_property_list',
+            bean: { id: 0, name: '', category: { id: 0, name: '' } }
         };
 
         var vue = new Vue({
             el: '#workingArea',
             data: data4Vue,
-            mounted:function(){
+            mounted:function() {
                 this.get();
             },
             methods: {
-                get:function(){
+                get:function() {
                     var id = getUrlParms("id");
                     var url = this.uri + "/" + id;
                     axios.get(url).then(function(response) {
                         vue.bean = response.data;
-                    })
+                    });
                 },
-                update:function () {
+                update:function() {
                     if(!checkEmpty(this.bean.name, "属性名称"))
                         return;
                     var url = this.uri;
-                    axios.put(url, this.bean).then(function(response){
+                    axios.put(url, this.bean).then(function(response) {
                         location.href = vue.listURL + "?cid=" + vue.bean.category.id;
                     });
                 }
@@ -40,10 +40,9 @@
 </script>
 
 <div id="workingArea">
-
     <ol class="breadcrumb">
         <li><a href="admin_category_list">所有分类</a></li>
-        <li><a href="'admin_property_list/' + bean.category.id">{{bean.category.name}}</a></li>
+        <li><a :href="'admin_property_list?cid=' + bean.category.id">{{bean.category.name}}</a></li>
         <li class="active">属性管理</li>
     </ol>
 
@@ -53,12 +52,11 @@
             <table class="editTable">
                 <tr>
                     <td>属性名称</td>
-                    <td><input  @keyup.enter="update" v-model.trim="bean.name" type="text" class="form-control"></td>
+                    <td><input  @keyup.enter="update" v-model.trim="bean.name" type="text" class="form-control" /></td>
                 </tr>
                 <tr class="submitTR">
                     <td colspan="2" align="center">
-                        <input type="hidden" name="id" v-model.trim="bean.id" >
-                        <a href="#nowhere" class="btn btn-success" @click="update">提 交</a>
+                        <a href="#nowhere" class="btn btn-success" @click="update">提交</a>
                     </td>
                 </tr>
             </table>

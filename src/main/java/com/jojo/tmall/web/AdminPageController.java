@@ -30,4 +30,19 @@ public class AdminPageController {
     public String editProperty(){
         return "admin/EditProperty";
     }
+
+    @GetMapping(value = "/admin_product_list")
+    public String listProduct(){
+        return "admin/listProduct";
+    }
+
+    @GetMapping(value = "/admin_product_edit")
+    public String editProduct(){
+        return "admin/EditProduct";
+    }
+
+    @GetMapping(value = "/admin_property_value_set")
+    public String setProductProperty(){
+        return "admin/setPropertyValue";
+    }
 }

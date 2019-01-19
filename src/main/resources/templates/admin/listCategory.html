@@ -35,7 +35,6 @@
                     if(!checkEmpty(this.file, "分类图片"))
                         return;
                     var url = this.uri;
-
                     //axios.js 上传文件要用 formData 这种方式
                     var formData = new FormData();
                     formData.append("image", this.file);
@@ -101,10 +100,10 @@
                     {{bean.name}}
                 </td>
                 <td>
-                    <a :href="'admin_property_list?cid=' + bean.id "><span class="glyphicon glyphicon-th-list"></span></a>
+                    <a :href="'admin_property_list?cid=' + bean.id"><span class="glyphicon glyphicon-th-list"></span></a>
                 </td>
                 <td>
-                    <a :href="'admin_product_list?cid=' + bean.id "><span class="glyphicon glyphicon-shopping-cart"></span></a>
+                    <a :href="'admin_product_list?cid=' + bean.id"><span class="glyphicon glyphicon-shopping-cart"></span></a>
                 </td>
                 <td>
                     <a :href="'admin_category_edit?id=' + bean.id "><span class="glyphicon glyphicon-edit"></span></a>
@@ -123,7 +122,7 @@
             <table class="addTable">
                 <tr>
                     <td>分类名称</td>
-                    <td><input  @keyup.enter="add" v-model.trim="bean.name" type="text" class="form-control"></td>
+                    <td><input  @keyup.enter="add" v-model.trim="bean.name" type="text" class="form-control" /></td>
                 </tr>
                 <tr>
                     <td>分类图片</td>
