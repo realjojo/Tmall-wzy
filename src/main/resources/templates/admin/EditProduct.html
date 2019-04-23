@@ -50,7 +50,7 @@
 <div id="workingArea">
     <ol class="breadcrumb">
         <li><a href="admin_category_list">所有分类</a></li>
-        <li><a href="'admin_product_list?cid=' + bean.cid" >{{bean.category.name}}</a></li>
+        <li><a :href="'admin_product_list?cid=' + bean.category.id" >{{bean.category.name}}</a></li>
         <li class="active">{{bean.original_name}}</li>
     </ol>
 

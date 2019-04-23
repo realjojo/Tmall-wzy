@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
 <head th:include="include/admin/adminHeader::html('分类管理')" ></head>
 <body>
 <div th:replace="include/admin/adminNavigator::html" ></div>
 <script>
-    $(function(){
+    $(function() {
         var data4Vue = {
             uri:'categories',
             beans: [],
@@ -14,7 +13,6 @@
             file: null
         };
 
-        //ViewModel
         var vue = new Vue({
             el: '#workingArea',
             data: data4Vue,
@@ -22,14 +20,14 @@
                 this.list(0);
             },
             methods: {
-                list:function(start){
-                    var url =  this.uri+ "?start="+start;
+                list: function(start) {
+                    var url = this.uri + "?start=" + start;
                     axios.get(url).then(function(response) {
                         vue.pagination = response.data;
                         vue.beans = response.data.content;
                     });
                 },
-                add: function () {
+                add: function() {
                     if(!checkEmpty(this.bean.name, "分类名称"))
                         return;
                     if(!checkEmpty(this.file, "分类图片"))
@@ -39,18 +37,18 @@
                     var formData = new FormData();
                     formData.append("image", this.file);
                     formData.append("name", this.bean.name);
-                    axios.post(url,formData).then(function(response){
+                    axios.post(url,formData).then(function(response) {
                         vue.list(0);
                         vue.bean = { id: 0, name: '', hp: '0'};
                         $("#categoryPic").val('');
                         vue.file = null;
                     });
                 },
-                deleteBean: function (id) {
+                deleteBean: function(id) {
                     if(!checkDeleteLink())
                         return;
-                    var url = this.uri+"/"+id;
-                    axios.delete(url).then(function(response){
+                    var url = this.uri + "/" + id;
+                    axios.delete(url).then(function(response) {
                         if(0!=response.data.length){
                             alert(response.data);
                         }
@@ -59,13 +57,13 @@
                         }
                     });
                 },
-                getFile: function (event) {
+                getFile: function(event) {
                     this.file = event.target.files[0];
                 },
-                jump: function(page){
-                    jump(page,vue); //定义在adminHeader.html 中
+                jump: function(page) {
+                    jump(page,vue); //定义在adminHeader.html中
                 },
-                jumpByNumber: function(start){
+                jumpByNumber: function(start) {
                     jumpByNumber(start,vue);
                 }
             }
@@ -78,7 +76,7 @@
     <br>
     <br>
     <div class="listDataTableDiv">
-        <table class="table table-striped table-bordered table-hover  table-condensed">
+        <table class="table table-striped table-bordered table-hover table-condensed">
             <thead>
             <tr class="success">
                 <th>ID</th>
@@ -109,7 +107,7 @@
                     <a :href="'admin_category_edit?id=' + bean.id "><span class="glyphicon glyphicon-edit"></span></a>
                 </td>
                 <td>
-                    <a href="#nowhere"  @click="deleteBean(bean.id)"><span class="   glyphicon glyphicon-trash"></span></a>
+                    <a href="#nowhere"  @click="deleteBean(bean.id)"><span class="glyphicon glyphicon-trash"></span></a>
                 </td>
             </tr>
             </tbody>

@@ -45,4 +45,19 @@ public class AdminPageController {
     public String setProductProperty(){
         return "admin/setPropertyValue";
     }
+
+    @GetMapping(value = "/admin_product_img_update")
+    public String updateProductImage(){
+        return "admin/updateProductImage";
+    }
+
+    @GetMapping(value = "/admin_user_list")
+    public String listUser() {
+        return "admin/listUser";
+    }
+
+    @GetMapping(value = "/admin_order_list")
+    public String listOrder() {
+        return "admin/listOrder";
+    }
 }

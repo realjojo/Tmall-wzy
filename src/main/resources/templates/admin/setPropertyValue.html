@@ -7,23 +7,21 @@
     $(function(){
         var cid = getUrlParms("cid");
         var pid = getUrlParms("pid");
-        var data4Vue = {
-            uri: 'propertyvalues',
-            listURL: 'admin_product_list',
-            beans: [],
-            bean: { pid: '', ptid: '', value: '', category:{id:0,name:''} },
-            category: '',
-            product: '',
-            properties: []
-        };
 
         var vue = new Vue({
             el: '#workingArea',
-            data: data4Vue,
-            mounted: function() {
+            data: {
+                uri: 'propertyvalues',
+                listURL: 'admin_product_list',
+               beans: [],
+                category: '',
+                product: '',
+                properties: []
+            },
+            created: function() {
                 this.getCategory(cid);
-                //this.getProperty(cid);
-                //this.getProduct(pid);
+                this.getProduct(pid);
+                this.getPropertyValue(cid, pid);
             },
             methods: {
                 getCategory: function(cid) {
@@ -36,35 +34,41 @@
                     var url = "categories/" + cid + "/all_properties";
                     axios.get(url).then(function(response) {
                         vue.properties = response.data;
+                        var params = [];
+                        for(var i in vue.properties) {
+                            var p = { product: '', property: '', value: '' };
+                            p.product = vue.product;
+                            p.property = vue.properties[i];
+                            params.push(p);
+                        }
+                        vue.beans = params;
+                        console.log(vue.beans);
                     });
                 },
                 getProduct: function(pid) {
                     var url = "products/" + pid;
                     axios.get(url).then(function(response) {
                         vue.product = response.data;
-                        vue.bean.pid = vue.product;
                     });
                 },
-                // addAll: function() {
-                //     var url = this.uri;
-                //     var params = [];
-                //     for(b in data4Vue.properties) {
-                //         var p = { pid: '', ptid: '', value: '' }
-                //         p.pid = data4Vue.product;
-                //         p.ptid = b;
-                //         params.push(p);
-                //     }
-                //     axios.post(url, params).then(function(response) {
-                //         console.log(response);
-                //         data4Vue.beans = response.data;
-                //     });
-                // },
+                getPropertyValue: function(cid, pid) {
+                    var url = this.uri + "/" + pid;
+                    axios.get(url).then(function(response) {
+                        if(response.data.length != 0) {
+                            vue.beans = response.data;
+                        } else {
+                            vue.getProperty(cid);
+                        }
+                    });
+                },
                 update: function() {
-                    if(!checkEmpty(this.bean.name, "产品名称"))
-                        return;
+                    for(i in vue.beans){
+                        if(!checkEmpty(vue.beans[i].value, vue.beans[i].property.name))
+                            return;
+                    }
                     var url = this.uri;
-                    axios.put(url, this.bean).then(function(response){
-                        location.href = vue.listURL + "?cid=" + vue.bean.category.id;
+                    axios.put(url, vue.beans).then(function(response){
+                        location.href = vue.listURL + "?cid=" + vue.category.id;
                     });
                 }
             }
@@ -72,24 +76,23 @@
     });
 </script>
 
-<div class="workingArea">
+<div id="workingArea">
     <ol class="breadcrumb">
         <li><a href="admin_category_list">所有分类</a></li>
-        <li><a :href="'admin_product_list?cid=' + bean.cid">{{category.name}}</a></li>
+        <li><a :href="'admin_product_list?cid=' + category.id">{{category.name}}</a></li>
         <li class="active">{{product.name}}</li>
         <li class="active">编辑产品属性</li>
     </ol>
 
     <div class="editPVDiv">
-        <div v-for="p in properties">
+        <div v-for="bean in beans">
             <div class="eachPV">
-                <span class="pvName">{{p.name}}</span>
+                <span class="pvName">{{bean.property.name}}：</span>
                 <span class="pvValue"><input @keyup.enter="update" v-model.trim="bean.value" class="pvValue" type="text" /></span>
             </div>
         </div>
         <div style="clear:both"></div>
     </div>
-
 </div>
 
 <div th:replace="include/admin/adminFooter::html" ></div>

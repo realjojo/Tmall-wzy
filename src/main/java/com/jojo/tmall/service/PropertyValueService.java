@@ -13,15 +13,11 @@ public class PropertyValueService {
     @Autowired
     PropertyValueDAO propertyValueDAO;
 
-    public void add(PropertyValue propertyValue) {
-        propertyValueDAO.save(propertyValue);
+    public void update(List<PropertyValue> propertyValue) {
+        propertyValueDAO.saveAll(propertyValue);
     }
 
-    public void addAll(List<PropertyValue> propertyValueList) {
-        propertyValueDAO.saveAll(propertyValueList);
-    }
-
-    public void update(PropertyValue propertyValue) {
-        propertyValueDAO.save(propertyValue);
+    public List<PropertyValue> getAll(int pid) {
+        return propertyValueDAO.findAllByProductId(pid);
     }
 }

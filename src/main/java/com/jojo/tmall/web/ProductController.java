@@ -4,6 +4,7 @@ import com.jojo.tmall.pojo.Product;
 import com.jojo.tmall.service.ProductService;
 import com.jojo.tmall.util.ImageUtil;
 import com.jojo.tmall.util.Page4Navigator;
+import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -33,17 +34,17 @@ public class ProductController {
     }
 
     @PostMapping("/products")
-    public Object add(@RequestBody Product product) throws Exception {
-        productService.add(product);
-        return product;
+    public Object add(MultipartFile image, HttpServletRequest request) throws Exception {
+        JSONObject jsonObject = JSONObject.fromObject(request.getParameter("product"));
+        Product p = (Product) JSONObject.toBean(jsonObject, Product.class);
+        productService.add(p);
+        saveOrUpdateImageFile(p, image, request);
+        return p;
     }
 
     @DeleteMapping("/products/{id}")
-    public String delete(@PathVariable("id") int id, HttpServletRequest request) {
+    public String delete(@PathVariable("id") int id) {
         productService.delete(id);
-        File imageFolder = new File(request.getServletContext().getRealPath("img/product"));
-        File file = new File(imageFolder,id+".jpg");
-        file.delete();
         return null;
     }
 
@@ -54,8 +55,8 @@ public class ProductController {
     }
 
     private void saveOrUpdateImageFile(Product bean, MultipartFile image, HttpServletRequest request) throws IOException {
-        File imageFolder= new File(request.getServletContext().getRealPath("img/product"));
-        File file = new File(imageFolder,bean.getId()+".jpg");
+        File imageFolder= new File(request.getServletContext().getRealPath("img/productsingle"));
+        File file = new File(imageFolder,bean.getId() + "_0single.jpg");
         if(!file.getParentFile().exists())
             file.getParentFile().mkdirs();
         image.transferTo(file);

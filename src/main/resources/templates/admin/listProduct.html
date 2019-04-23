@@ -11,7 +11,8 @@
             beans: [],
             bean: { id: 0, name: '', subTitle:'', originalPrice:'', promotePrice:'', stock:'', category: { id: 0, name: '' } },
             pagination: {},
-            category: ''
+            category: '',
+            file: null
         };
         var vue = new Vue({
             el: '#workingArea',
@@ -46,9 +47,14 @@
                         return;
                     if(!checkEmpty(this.bean.stock, "库存数量"))
                         return;
+                    if(!checkEmpty(this.file, "产品图片"))
+                        return;
                     var url = this.uri;
                     this.bean.category = this.category;
-                    axios.post(url, this.bean).then(function(response) {
+                    var formData = new FormData();
+                    formData.append("image", this.file);
+                    formData.append("product", JSON.stringify(this.bean));
+                    axios.post(url, formData).then(function(response) {
                         vue.list(0);
                         vue.bean = { id: 0, name: '', subTitle:'', originalPrice:'', promotePrice:'', stock:'', category: { id: 0, name: '' } };
                     });
@@ -58,6 +64,7 @@
                         return;
                     var url = this.uri + "/" + id;
                     axios.delete(url).then(function(response){
+                        console.log(response);
                         if(0 != response.data.length){
                             alert(response.data);
                         }
@@ -65,6 +72,9 @@
                             vue.list(0);
                         }
                     });
+                },
+                getFile: function(event) {
+                    this.file = event.target.files[0];
                 },
                 jump:function(page) {
                     jump(page,vue);
@@ -103,7 +113,7 @@
             <tr v-for="bean in beans">
                 <td>{{bean.id}}</td>
                 <td>
-                    <img height="40px" :src="'img/product/'+bean.id+'.jpg'">
+                    <img height="40px" :src="'img/productsingle/' + bean.id + '_0single.jpg'">
                 </td>
                 <td>{{bean.name}}</td>
                 <td>{{bean.subTitle}}</td>
@@ -111,7 +121,7 @@
                 <td>{{bean.promotePrice}}</td>
                 <td>{{bean.stock}}</td>
                 <td>
-                    <a :href="'admin_product_pic_edit?pid=' + bean.id"><span class="glyphicon glyphicon-picture"></span></a>
+                    <a :href="'admin_product_img_update?cid=' + bean.category.id + '&pid=' + bean.id"><span class="glyphicon glyphicon-picture"></span></a>
                 </td>
                 <td>
                     <a :href="'admin_property_value_set?cid=' + bean.category.id + '&pid=' + bean.id"><span class="glyphicon glyphicon-th-list"></span></a>
@@ -150,6 +160,12 @@
                 <tr>
                     <td>库存数量</td>
                     <td><input  @keyup.enter="add" v-model.trim="bean.stock" type="text" class="form-control" /></td>
+                </tr>
+                <tr>
+                    <td>产品图片</td>
+                    <td>
+                        <input id="productPic" accept="image/*" type="file" name="image" @change="getFile($event)" />
+                    </td>
                 </tr>
                 <tr class="submitTR">
                     <td colspan="2" align="center">

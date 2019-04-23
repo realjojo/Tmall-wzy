@@ -20,7 +20,7 @@ public class CategoryController {
     @Autowired
     CategoryService categoryService;
 
-    @GetMapping(value="/categories")
+    @GetMapping("/categories")
     public Page4Navigator<Category> list(@RequestParam(value = "start", defaultValue = "0") int start, @RequestParam(value = "size", defaultValue = "5") int size) throws Exception {
         start = start < 0 ? 0 : start;
         //5表示导航分页最多有5个，像 [1,2,3,4,5] 这样
@@ -55,10 +55,10 @@ public class CategoryController {
     }
 
     @DeleteMapping("/categories/{id}")
-    public String delete(@PathVariable("id") int id, HttpServletRequest request) throws Exception{
+    public String delete(@PathVariable("id") int id, HttpServletRequest request) throws Exception {
         categoryService.delete(id);
         File  imageFolder= new File(request.getServletContext().getRealPath("img/category"));
-        File file = new File(imageFolder,id+".jpg");
+        File file = new File(imageFolder,id + ".jpg");
         file.delete();
         return null;
     }
@@ -70,7 +70,7 @@ public class CategoryController {
     }
 
     @PutMapping("/categories/{id}")
-    public Object update(Category bean, MultipartFile image,HttpServletRequest request) throws IOException {
+    public Object update(Category bean, MultipartFile image, HttpServletRequest request) throws IOException {
         String name = request.getParameter("name");
         bean.setName(name);
         categoryService.update(bean);
