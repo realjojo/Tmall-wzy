@@ -4,6 +4,8 @@ import com.jojo.tmall.pojo.Category;
 import com.jojo.tmall.service.CategoryService;
 import com.jojo.tmall.util.ImageUtil;
 import com.jojo.tmall.util.Page4Navigator;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,11 +17,13 @@ import java.io.File;
 import java.io.IOException;
 
 @RestController
+@Api(tags = "Category", description = "Category相关的操作")
 public class CategoryController {
 
     @Autowired
     CategoryService categoryService;
 
+    @ApiOperation(value = "获取category列表")
     @GetMapping("/categories")
     public Page4Navigator<Category> list(@RequestParam(value = "start", defaultValue = "0") int start, @RequestParam(value = "size", defaultValue = "5") int size) throws Exception {
         start = start < 0 ? 0 : start;
@@ -37,6 +41,7 @@ public class CategoryController {
      * @return
      * @throws IOException
      */
+    @ApiOperation(value = "添加category")
     @PostMapping("/categories")
     public Object add(Category bean, MultipartFile image, HttpServletRequest request) throws IOException {
         categoryService.add(bean);
@@ -54,6 +59,7 @@ public class CategoryController {
         ImageIO.write(img, "jpg", file);
     }
 
+    @ApiOperation(value = "删除category")
     @DeleteMapping("/categories/{id}")
     public String delete(@PathVariable("id") int id, HttpServletRequest request) throws Exception {
         categoryService.delete(id);
@@ -63,12 +69,14 @@ public class CategoryController {
         return null;
     }
 
+    @ApiOperation(value = "获取某个category")
     @GetMapping("/categories/{id}")
     public Category get(@PathVariable("id") int id) throws Exception {
         Category bean = categoryService.get(id);
         return bean;
     }
 
+    @ApiOperation(value = "修改category")
     @PutMapping("/categories/{id}")
     public Object update(Category bean, MultipartFile image, HttpServletRequest request) throws IOException {
         String name = request.getParameter("name");

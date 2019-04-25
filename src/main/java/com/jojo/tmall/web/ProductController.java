@@ -4,6 +4,8 @@ import com.jojo.tmall.pojo.Product;
 import com.jojo.tmall.service.ProductService;
 import com.jojo.tmall.util.ImageUtil;
 import com.jojo.tmall.util.Page4Navigator;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -16,11 +18,13 @@ import java.io.File;
 import java.io.IOException;
 
 @RestController
+@Api(tags = "Product", description = "Product相关的操作")
 public class ProductController {
 
     @Autowired
     ProductService productService;
 
+    @ApiOperation(value = "获取product列表")
     @GetMapping("/categories/{cid}/products")
     public Page4Navigator<Product> list(@PathVariable("cid") int cid, @RequestParam(value = "start", defaultValue = "0") int start, @RequestParam(value = "size", defaultValue = "5") int size) throws Exception {
         start = start < 0 ? 0 : start;
@@ -28,11 +32,13 @@ public class ProductController {
         return page;
     }
 
+    @ApiOperation(value = "获取某个product")
     @GetMapping("/products/{id}")
     public Product get(@PathVariable("id") int id) {
         return productService.get(id);
     }
 
+    @ApiOperation(value = "增加product")
     @PostMapping("/products")
     public Object add(MultipartFile image, HttpServletRequest request) throws Exception {
         JSONObject jsonObject = JSONObject.fromObject(request.getParameter("product"));
@@ -42,12 +48,14 @@ public class ProductController {
         return p;
     }
 
+    @ApiOperation(value = "删除product")
     @DeleteMapping("/products/{id}")
     public String delete(@PathVariable("id") int id) {
         productService.delete(id);
         return null;
     }
 
+    @ApiOperation(value = "修改product")
     @PutMapping("/products")
     public Object update(@RequestBody Product product) throws Exception {
         productService.update(product);

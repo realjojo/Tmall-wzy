@@ -3,7 +3,7 @@ package com.jojo.tmall.pojo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.sql.Timestamp;
 
 @Entity
 @Table(name = "order_")
@@ -34,16 +34,16 @@ public class Order {
     private String userMessage;
 
     @Column(name = "createDate")
-    private Date createDate;
+    private Timestamp createDate;
 
     @Column(name = "payDate")
-    private Date payDate;
+    private Timestamp payDate;
 
     @Column(name = "deliveryDate")
-    private Date deliveryDate;
+    private Timestamp deliveryDate;
 
     @Column(name = "confirmDate")
-    private Date confirmDate;
+    private Timestamp confirmDate;
 
     @ManyToOne
     @JoinColumn(name = "uid")
@@ -108,35 +108,35 @@ public class Order {
         return userMessage;
     }
 
-    public void setCreateDate(Date createDate) {
+    public void setCreateDate(Timestamp createDate) {
         this.createDate = createDate;
     }
 
-    public Date getCreateDate() {
+    public Timestamp getCreateDate() {
         return createDate;
     }
 
-    public void setPayDate(Date payDate) {
+    public void setPayDate(Timestamp payDate) {
         this.payDate = payDate;
     }
 
-    public Date getPayDate() {
+    public Timestamp getPayDate() {
         return payDate;
     }
 
-    public void setDeliveryDate(Date deliveryDate) {
+    public void setDeliveryDate(Timestamp deliveryDate) {
         this.deliveryDate = deliveryDate;
     }
 
-    public Date getDeliveryDate() {
+    public Timestamp getDeliveryDate() {
         return deliveryDate;
     }
 
-    public void setConfirmDate(Date confirmDate) {
+    public void setConfirmDate(Timestamp confirmDate) {
         this.confirmDate = confirmDate;
     }
 
-    public Date getConfirmDate() {
+    public Timestamp getConfirmDate() {
         return confirmDate;
     }
 

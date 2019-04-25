@@ -8,7 +8,8 @@
         var vue = new Vue({
             el: '#workingArea',
             data: {
-                uri: 'orders',
+                order_uri: 'orders',
+                orderitem_uri: 'orderitems',
                 beans: [],
                 bean: { id: 0, name: ''},
                 pagination: {}
@@ -18,19 +19,45 @@
             },
             methods: {
                 list: function(start) {
-                    var url = this.uri + "?start=" + start;
+                    let url = this.orderitem_uri + "/list?start=" + start;
                     axios.get(url).then(function(response) {
                         vue.pagination = response.data;
-                        vue.beans = response.data.content;
-                        console.log(vue.beans.length);
-                        // for(var i=0; i<vue.beans.length; i++) {
-                        //     axios.get("orderitems/" + vue.beans[i].id).then(function(value) {
-                        //         console.log("===="+i+"====");
-                        //         console.log(value.data.content);
-                        //     })
-                        // }
-                        console.log(response.data.content);
+                        let arr = response.data.content.reverse();
+                        let arr1 = [];
+                        arr.forEach(function (object) {
+                           arr1.push(object.order.id);
+                        });
+                        let orderId = Array.from(new Set(arr1));
+                        let orderArr = orderId;
+                        for(let i = 0; i < orderId.length; i++) {
+                            let product_num = 0;
+                            let product_price = 0;
+                            let oneOrder = [];
+                            arr.forEach(function (obj) {
+                                if(obj.order.id == orderId[i]) {
+                                    oneOrder.push(obj);
+                                }
+                            });
+                            oneOrder.forEach(function (one) {
+                                product_num = product_num + one.number;
+                                product_price = product_price + one.product.promotePrice * one.number;
+                            });
+                            orderArr[i] = oneOrder[0];
+                            orderArr[i].id = orderArr[i].order.id;
+                            orderArr[i].priceSum = product_price;
+                            orderArr[i].numberSum = product_num;
+                            orderArr[i].order.createDate = timestamp2Date(orderArr[i].order.createDate);
+                            orderArr[i].order.payDate = timestamp2Date(orderArr[i].order.payDate);
+                        }
+                        vue.beans = orderArr;
+                        console.log(vue.beans);
                     });
+                },
+                getOrderItem: function() {
+                    console.log("click");
+                    // if (this.display === "display:none") {
+                    //     this.display = "";
+                    // }
                 },
                 jump: function(page) {
                     jump(page,vue);
@@ -40,6 +67,15 @@
                 }
             }
         });
+
+        function timestamp2Date(timestamp) {
+            let date = new Date(timestamp),
+                y = date.getFullYear(),
+                m = date.getMonth() + 1,
+                d = date.getDate();
+            return y + "-" + (m < 10 ? "0" + m : m) + "-" + (d < 10 ? "0" + d : d) + " " + date.toTimeString().substr(0, 8);
+        }
+
     });
 
 </script>
@@ -54,8 +90,8 @@
                     <th>ID</th>
                     <th>状态</th>
                     <th>金额</th>
-                    <th>商品数量</th>
-                    <th>买家名称</th>
+                    <th width="100px">商品数量</th>
+                    <th width="100px">买家名称</th>
                     <th>创建时间</th>
                     <th>支付时间</th>
                     <th>发货时间</th>
@@ -66,11 +102,40 @@
             <tbody>
                 <tr v-for="bean in beans">
                     <td>{{bean.id}}</td>
-                    <td>{{bean.status}}</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td>{{bean.order.status}}</td>
+                    <td>{{bean.priceSum}}</td>
+                    <td>{{bean.numberSum}}</td>
+                    <td>{{bean.user.name}}</td>
+                    <td>{{bean.order.createDate}}</td>
+                    <td>{{bean.order.payDate}}</td>
+                    <td>{{bean.order.deliverDate}}</td>
+                    <td>{{bean.order.confirmDate}}</td>
+                    <td>
+                        <button class="orderPageCheckOrderItems btn btn-primary btn-xs" @click="getOrderItem">查看详情</button>
+                        <button class="btn btn-primary btn-xs">发货</button>
+                    </td>
+                </tr>
+                <tr v-show="true">
+                    <td colspan="10" align="center">
+                        <div class="orderPageOrderItem">
+                            <table width="800px" align="center" class="orderPageOrderItemTable">
+                                <tr>
+                                    <td align="left">
+                                        <img width="40px" height="40px" src="img/productsingle/4_0single.jpg">
+                                    </td>
+                                    <td>
+                                        <a href="foreproduct?pid=${oi.product.id}"><span>aaa</span></a>
+                                    </td>
+                                    <td align="right">
+                                        <span class="text-muted">3个</span>
+                                    </td>
+                                    <td align="right">
+                                        <span class="text-muted">单价：￥356</span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </td>
                 </tr>
             </tbody>
         </table>

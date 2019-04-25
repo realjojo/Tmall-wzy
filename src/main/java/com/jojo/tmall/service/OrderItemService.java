@@ -29,7 +29,7 @@ public class OrderItemService {
         return orderItemDAO.getByOrderId(oid);
     }
 
-//    public List<OrderItem> getAll() {
-//        return orderItemDAO.findAll();
-//    }
+    public List<OrderItem> getAll() {
+        return orderItemDAO.findAll();
+    }
 }

@@ -3,34 +3,38 @@ package com.jojo.tmall.web;
 import com.jojo.tmall.pojo.OrderItem;
 import com.jojo.tmall.service.OrderItemService;
 import com.jojo.tmall.util.Page4Navigator;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@RequestMapping("/orderitems")
+@EnableAutoConfiguration
+@Api(tags = "OrderItem", description = "OrderItem相关的操作")
 public class OrderItemController {
 
     @Autowired
     OrderItemService orderItemService;
 
-    @GetMapping("/orderitems")
+    @ApiOperation(value = "获取orderItem列表")
+    @GetMapping("/list")
     public Page4Navigator<OrderItem> list(@RequestParam(value = "start", defaultValue = "0") int start, @RequestParam(value = "size", defaultValue = "5") int size) {
         start = start < 0 ? 0 : start;
         Page4Navigator<OrderItem> page = orderItemService.list(start, size, 5);
         return page;
     }
 
-    @GetMapping("/orderitems/{oid}")
+    @GetMapping("/get/{oid}")
     public OrderItem getByOrderId(@PathVariable("oid") int oid) {
         return orderItemService.getByOrderId(oid);
     }
 
-//    @GetMapping("/orderitems")
-//    public List<OrderItem> getAll() {
-//        return orderItemService.getAll();
-//    }
+    @GetMapping("/all")
+    public List<OrderItem> getAll() {
+        return orderItemService.getAll();
+    }
 }

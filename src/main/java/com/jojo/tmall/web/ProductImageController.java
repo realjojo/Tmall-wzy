@@ -4,6 +4,8 @@ import com.jojo.tmall.pojo.Product;
 import com.jojo.tmall.pojo.ProductImage;
 import com.jojo.tmall.service.ProductImageService;
 import com.jojo.tmall.util.ImageUtil;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -17,16 +19,19 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
+@Api(tags = "ProductImage", description = "ProductImage相关的操作")
 public class ProductImageController {
 
     @Autowired
     ProductImageService productImageService;
 
+    @ApiOperation(value = "获取productImage列表")
     @GetMapping("/productimages/{pid}")
     public List<ProductImage> list(@PathVariable("pid") int pid, @RequestParam("type") String type) {
         return productImageService.list(pid, type);
     }
 
+    @ApiOperation(value = "增加productImage")
     @PostMapping("/productimages")
     public ProductImage add(ProductImage productImage, MultipartFile image, HttpServletRequest request) throws IOException {
         JSONObject jsonObject = JSONObject.fromObject(request.getParameter("pid"));
@@ -37,6 +42,7 @@ public class ProductImageController {
         return productImage;
     }
 
+    @ApiOperation(value = "删除productImage")
     @DeleteMapping("/productimages/{id}")
     public String delete(@PathVariable("id") int id, @RequestParam("type") String type, HttpServletRequest request) throws Exception {
         ProductImage p = productImageService.get(id);
