@@ -44,8 +44,10 @@
                             });
                             orderArr[i] = oneOrder[0];
                             orderArr[i].id = orderArr[i].order.id;
+                            orderArr[i].showDetail = false;
                             orderArr[i].priceSum = product_price;
                             orderArr[i].numberSum = product_num;
+                            orderArr[i].orderItems = oneOrder;
                             orderArr[i].order.createDate = timestamp2Date(orderArr[i].order.createDate);
                             orderArr[i].order.payDate = timestamp2Date(orderArr[i].order.payDate);
                         }
@@ -53,11 +55,11 @@
                         console.log(vue.beans);
                     });
                 },
-                getOrderItem: function() {
-                    console.log("click");
-                    // if (this.display === "display:none") {
-                    //     this.display = "";
-                    // }
+                getOrderItem: function(i) {
+                    let show = vue.beans[i].showDetail;
+                    let obj = vue.beans[i];
+                    obj.showDetail = !show;
+                    Vue.set(vue.beans, i, obj);
                 },
                 jump: function(page) {
                     jump(page,vue);
@@ -100,43 +102,46 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="bean in beans">
-                    <td>{{bean.id}}</td>
-                    <td>{{bean.order.status}}</td>
-                    <td>{{bean.priceSum}}</td>
-                    <td>{{bean.numberSum}}</td>
-                    <td>{{bean.user.name}}</td>
-                    <td>{{bean.order.createDate}}</td>
-                    <td>{{bean.order.payDate}}</td>
-                    <td>{{bean.order.deliverDate}}</td>
-                    <td>{{bean.order.confirmDate}}</td>
-                    <td>
-                        <button class="orderPageCheckOrderItems btn btn-primary btn-xs" @click="getOrderItem">查看详情</button>
-                        <button class="btn btn-primary btn-xs">发货</button>
-                    </td>
-                </tr>
-                <tr v-show="true">
-                    <td colspan="10" align="center">
-                        <div class="orderPageOrderItem">
-                            <table width="800px" align="center" class="orderPageOrderItemTable">
-                                <tr>
-                                    <td align="left">
-                                        <img width="40px" height="40px" src="img/productsingle/4_0single.jpg">
-                                    </td>
-                                    <td>
-                                        <a href="foreproduct?pid=${oi.product.id}"><span>aaa</span></a>
-                                    </td>
-                                    <td align="right">
-                                        <span class="text-muted">3个</span>
-                                    </td>
-                                    <td align="right">
-                                        <span class="text-muted">单价：￥356</span>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-                    </td>
-                </tr>
+                <template v-for="(bean, index) in beans">
+                    <tr>
+                        <td>{{bean.id}}</td>
+                        <td>{{bean.order.status}}</td>
+                        <td>{{bean.priceSum}}</td>
+                        <td>{{bean.numberSum}}</td>
+                        <td>{{bean.user.name}}</td>
+                        <td>{{bean.order.createDate}}</td>
+                        <td>{{bean.order.payDate}}</td>
+                        <td>{{bean.order.deliverDate}}</td>
+                        <td>{{bean.order.confirmDate}}</td>
+                        <td>
+                            <button class="orderPageCheckOrderItems btn btn-primary btn-xs" @click="getOrderItem(index)">查看详情</button>
+                            <button class="btn btn-primary btn-xs">发货</button>
+                        </td>
+                    </tr>
+                    <tr v-show="bean.showDetail">
+                        <td colspan="10" align="center">
+                            <div class="orderPageOrderItem">
+                                <table width="800px" align="center" class="orderPageOrderItemTable">
+                                    <tr v-for="item in bean.orderItems">
+                                        <td align="left">
+                                            <img width="40px" height="40px" src="img/productsingle/{{item.product.id}}_0single.jpg">
+                                        </td>
+                                        <td>
+                                            <!--todo:产品链接跳转-->
+                                            <a href="foreproduct?pid={{item.product.id}}"><span>{{item.product.name}}</span></a>
+                                        </td>
+                                        <td align="right">
+                                            <span class="text-muted">{{item.number}}个</span>
+                                        </td>
+                                        <td align="right">
+                                            <span class="text-muted">单价：￥{{item.product.promotePrice}}</span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </td>
+                    </tr>
+                </template>
             </tbody>
         </table>
     </div>
