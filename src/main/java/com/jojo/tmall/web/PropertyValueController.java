@@ -11,20 +11,21 @@ import java.util.List;
 
 @RestController
 @Api(tags = "PropertyValue", description = "PropertyValue相关的操作")
+@RequestMapping("/propertyvalues")
 public class PropertyValueController {
 
     @Autowired
     PropertyValueService propertyValueService;
 
     @ApiOperation(value = "修改propertyValue")
-    @PutMapping("/propertyvalues")
+    @PutMapping("/update")
     public Object update(@RequestBody List<PropertyValue> propertyValue) {
         propertyValueService.update(propertyValue);
         return propertyValue;
     }
 
     @ApiOperation(value = "获取所有propertyValue")
-    @GetMapping("/propertyvalues/{pid}")
+    @GetMapping("/get_all/{pid}")
     public List<PropertyValue> getAll(@PathVariable("pid") int pid) {
         return propertyValueService.getAll(pid);
     }

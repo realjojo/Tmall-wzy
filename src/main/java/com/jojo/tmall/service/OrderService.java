@@ -17,9 +17,14 @@ public class OrderService {
     OrderDAO orderDAO;
 
     public Page4Navigator<Order> list(int start, int size, int navigatePages) {
-        Sort sort = new Sort(Sort.Direction.DESC, "id");
+        Sort sort = new Sort(Sort.Direction.ASC, "id");
         Pageable pageable = new PageRequest(start, size, sort);
         Page pageFromJPA = orderDAO.findAll(pageable);
         return new Page4Navigator<Order>(pageFromJPA,navigatePages);
     }
+
+    public void update(Order order) {
+        orderDAO.save(order);
+    }
+
 }

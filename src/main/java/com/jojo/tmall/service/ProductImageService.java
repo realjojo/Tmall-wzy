@@ -32,4 +32,5 @@ public class ProductImageService {
     public ProductImage get(int id) {
         return productImageDAO.getOne(id);
     }
+
 }

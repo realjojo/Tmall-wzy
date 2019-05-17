@@ -17,7 +17,7 @@
             },
             methods: {
                 list: function(start) {
-                    var url = this.uri + "?start=" + start;
+                    let url = this.uri + "/list?start=" + start;
                     axios.get(url).then(function(response) {
                         console.log(response);
                         vue.pagination = response.data;

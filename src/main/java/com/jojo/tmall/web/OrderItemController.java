@@ -13,7 +13,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/orderitems")
-@EnableAutoConfiguration
 @Api(tags = "OrderItem", description = "OrderItem相关的操作")
 public class OrderItemController {
 
@@ -28,13 +27,16 @@ public class OrderItemController {
         return page;
     }
 
+    @ApiOperation(value = "获取某个orderItem")
     @GetMapping("/get/{oid}")
     public OrderItem getByOrderId(@PathVariable("oid") int oid) {
         return orderItemService.getByOrderId(oid);
     }
 
+    @ApiOperation(value = "获取所有orderItem")
     @GetMapping("/all")
     public List<OrderItem> getAll() {
         return orderItemService.getAll();
     }
+
 }

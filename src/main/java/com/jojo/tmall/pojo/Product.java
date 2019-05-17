@@ -1,6 +1,7 @@
 package com.jojo.tmall.pojo;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import io.swagger.annotations.ApiModelProperty;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -13,28 +14,36 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
+    @ApiModelProperty(value = "id")
     private int id;
 
     @Column(name = "name")
+    @ApiModelProperty(value = "商品名称")
     private String name;
 
     @Column(name = "subTitle")
+    @ApiModelProperty(value = "商品小标题")
     private String subTitle;
 
     @Column(name = "originalPrice")
+    @ApiModelProperty(value = "商品原价")
     private float originalPrice;
 
     @Column(name = "promotePrice")
+    @ApiModelProperty(value = "商品促销价")
     private float promotePrice;
 
     @Column(name = "stock")
+    @ApiModelProperty(value = "商品库存")
     private int stock;
 
     @ManyToOne
     @JoinColumn(name = "cid")
+    @ApiModelProperty(value = "商品对应分类信息")
     private Category category;
 
     @Column(name = "createDate")
+    @ApiModelProperty(value = "商品创建时间")
     private Date createDate;
 
     public void setId(int id) {

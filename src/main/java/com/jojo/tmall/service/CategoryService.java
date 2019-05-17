@@ -24,15 +24,15 @@ public class CategoryService {
      * @return
      */
     public List<Category> list(){
-        Sort sort = new Sort(Sort.Direction.DESC, "id");
+        Sort sort = new Sort(Sort.Direction.ASC, "id");
         return categoryDAO.findAll(sort);
     }
 
     public Page4Navigator<Category> list(int start, int size, int navigatePages){
-        Sort sort = new Sort(Sort.Direction.DESC, "id");
+        Sort sort = new Sort(Sort.Direction.ASC, "id");
         Pageable pageable = new PageRequest(start, size, sort);
-        Page pageFromJPA =categoryDAO.findAll(pageable);
-        return new Page4Navigator<Category>(pageFromJPA,navigatePages); //TODO:<>里写Category与不写的区别
+        Page pageFromJPA = categoryDAO.findAll(pageable);
+        return new Page4Navigator<Category>(pageFromJPA,navigatePages);
     }
 
     public void add(Category category) {

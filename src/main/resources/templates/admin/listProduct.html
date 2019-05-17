@@ -23,13 +23,13 @@
             },
             methods: {
                 getCategory:function(cid) {
-                    var url = "categories/" + cid;
+                    let url = "categories/get/" + cid;
                     axios.get(url).then(function (response) {
                         vue.category = response.data;
                     });
                 },
                 list:function(start) {
-                    var url = "categories/" + cid + "/" + this.uri + "?start=" + start;
+                    let url = this.uri + "/list/" + cid + "?start=" + start;
                     axios.get(url).then(function(response) {
                         console.log(response);
                         vue.beans = response.data.content;
@@ -49,9 +49,9 @@
                         return;
                     if(!checkEmpty(this.file, "产品图片"))
                         return;
-                    var url = this.uri;
+                    let url = this.uri + "/add";
                     this.bean.category = this.category;
-                    var formData = new FormData();
+                    let formData = new FormData();
                     formData.append("image", this.file);
                     formData.append("product", JSON.stringify(this.bean));
                     axios.post(url, formData).then(function(response) {
@@ -62,7 +62,7 @@
                 deleteBean:function(id) {
                     if(!checkDeleteLink())
                         return;
-                    var url = this.uri + "/" + id;
+                    let url = this.uri + "/delete/" + id;
                     axios.delete(url).then(function(response){
                         console.log(response);
                         if(0 != response.data.length){
@@ -113,7 +113,7 @@
             <tr v-for="bean in beans">
                 <td>{{bean.id}}</td>
                 <td>
-                    <img height="40px" :src="'img/productsingle/' + bean.id + '_0single.jpg'">
+                    <img height="40px" :src="'img/productsingle/' + bean.id + '_1single.jpg'">
                 </td>
                 <td>{{bean.name}}</td>
                 <td>{{bean.subTitle}}</td>

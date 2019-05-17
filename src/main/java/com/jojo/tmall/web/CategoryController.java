@@ -18,13 +18,14 @@ import java.io.IOException;
 
 @RestController
 @Api(tags = "Category", description = "Category相关的操作")
+@RequestMapping("/categories")
 public class CategoryController {
 
     @Autowired
     CategoryService categoryService;
 
     @ApiOperation(value = "获取category列表")
-    @GetMapping("/categories")
+    @GetMapping("/list")
     public Page4Navigator<Category> list(@RequestParam(value = "start", defaultValue = "0") int start, @RequestParam(value = "size", defaultValue = "5") int size) throws Exception {
         start = start < 0 ? 0 : start;
         //5表示导航分页最多有5个，像 [1,2,3,4,5] 这样
@@ -42,7 +43,7 @@ public class CategoryController {
      * @throws IOException
      */
     @ApiOperation(value = "添加category")
-    @PostMapping("/categories")
+    @PostMapping("/add")
     public Object add(Category bean, MultipartFile image, HttpServletRequest request) throws IOException {
         categoryService.add(bean);
         saveOrUpdateImageFile(bean, image, request);
@@ -60,7 +61,7 @@ public class CategoryController {
     }
 
     @ApiOperation(value = "删除category")
-    @DeleteMapping("/categories/{id}")
+    @DeleteMapping("/delete/{id}")
     public String delete(@PathVariable("id") int id, HttpServletRequest request) throws Exception {
         categoryService.delete(id);
         File  imageFolder= new File(request.getServletContext().getRealPath("img/category"));
@@ -70,14 +71,14 @@ public class CategoryController {
     }
 
     @ApiOperation(value = "获取某个category")
-    @GetMapping("/categories/{id}")
+    @GetMapping("/get/{id}")
     public Category get(@PathVariable("id") int id) throws Exception {
         Category bean = categoryService.get(id);
         return bean;
     }
 
     @ApiOperation(value = "修改category")
-    @PutMapping("/categories/{id}")
+    @PutMapping("/update")
     public Object update(Category bean, MultipartFile image, HttpServletRequest request) throws IOException {
         String name = request.getParameter("name");
         bean.setName(name);

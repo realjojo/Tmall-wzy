@@ -21,7 +21,7 @@
             },
             methods: {
                 list: function(start) {
-                    var url = this.uri + "?start=" + start;
+                    let url = this.uri + "/list?start=" + start;
                     axios.get(url).then(function(response) {
                         vue.pagination = response.data;
                         vue.beans = response.data.content;
@@ -32,9 +32,9 @@
                         return;
                     if(!checkEmpty(this.file, "分类图片"))
                         return;
-                    var url = this.uri;
+                    let url = this.uri + "/add";
                     //axios.js 上传文件要用 formData 这种方式
-                    var formData = new FormData();
+                    let formData = new FormData();
                     formData.append("image", this.file);
                     formData.append("name", this.bean.name);
                     axios.post(url,formData).then(function(response) {
@@ -47,7 +47,7 @@
                 deleteBean: function(id) {
                     if(!checkDeleteLink())
                         return;
-                    var url = this.uri + "/" + id;
+                    let url = this.uri + "/delete/" + id;
                     axios.delete(url).then(function(response) {
                         if(0!=response.data.length){
                             alert(response.data);
@@ -92,7 +92,7 @@
             <tr v-for="bean in beans">
                 <td>{{bean.id}}</td>
                 <td>
-                    <img height="40px"  :src="'img/category/'+bean.id+'.jpg'">
+                    <img height="40px"  :src="'img/category/' + bean.id + '.jpg'">
                 </td>
                 <td>
                     {{bean.name}}

@@ -7,7 +7,6 @@
     $(function(){
         var cid = getUrlParms("cid");
         var pid = getUrlParms("pid");
-
         var vue = new Vue({
             el: '#workingArea',
             data: {
@@ -26,51 +25,72 @@
             },
             methods: {
                 getCategory: function(cid) {
-                    var url = "categories/" + cid;
+                    let url = "categories/get/" + cid;
                     axios.get(url).then(function (response) {
                         vue.category = response.data;
                     });
                 },
+
                 getProduct: function(pid) {
-                    var url = "products/" + pid;
+                    let url = "products/get/" + pid;
                     axios.get(url).then(function(response) {
                         vue.product = response.data;
                     });
                 },
+
                 getpics: function(pid, type) {
-                    var url = this.uri + "/" + pid + "?type=" + type;
+                    let url = this.uri + "/list/" + pid + "?type=" + type;
                     axios.get(url).then(function (response) {
                         console.log(response.data);
                         if(type == "single") {
                             vue.singlePics = response.data;
-                            for(var i in vue.singlePics) {
-                                vue.singlePics[i].src = "img/productsingle/" + pid + "_" + i + "single.jpg";
+                            for(let i = 0; i < vue.singlePics.length; i++) {
+                                vue.singlePics[i].src = "img/productsingle/" + vue.singlePics[i].name;
                             }
                         } else if(type == "detail") {
                             vue.detailPics = response.data;
-                            for(var i in vue.detailPics) {
-                                vue.detailPics[i].src = "img/productdetail/" + pid + "_" + i + "detail.jpg";
+                            for(let i = 0; i < vue.detailPics.length; i++) {
+                                vue.detailPics[i].src = "img/productdetail/" + vue.detailPics[i].name;
                             }
                         }
                     });
                 },
+
                 add: function(type, updateType) {
                     if(!checkEmpty(this.file, updateType))
                         return;
-                    var url = this.uri;
-                    var formData = new FormData();
+                    let url = this.uri + "/add";
+                    let formData = new FormData();
+                    let num, img_name;
+                    if(type == "single") {
+                        if(vue.singlePics.length == 0) {
+                            img_name = vue.product.id + "_1single.jpg";
+                        } else {
+                            num = vue.singlePics[vue.singlePics.length - 1].id + 1;
+                            img_name = vue.product.id + "_" + num + "single.jpg";
+                        }
+                    } else if(type == "detail") {
+                        if(vue.detailPics.length == 0) {
+                            img_name = vue.product.id + "_1detail.jpg";
+                        } else {
+                            num = vue.detailPics[vue.detailPics.length - 1].id + 1;
+                            img_name = vue.product.id + "_" + num + "detail.jpg";
+                        }
+                    }
                     formData.append("image", this.file);
                     formData.append("pid", JSON.stringify(vue.product));
                     formData.append("type", type);
+                    formData.append("name", img_name);
                     axios.post(url, formData).then(function (response) {
                         console.log(response.data);
                         vue.getpics(pid, type);
                     });
                 },
-                deleteBean: function(id, type) {
+
+                deleteBean: function(id, type, img_name) {
                     if(!checkDeleteLink())
                         return;
-                    var url = this.uri + "/" + id + "?type=" + type;
+                    let url = this.uri + "/delete/" + id + "?type=" + type + "&name=" + img_name;
                     axios.delete(url).then(function (response) {
                         if(0 != response.data.length) {
                             alert(response.data);
@@ -78,8 +98,9 @@
                         else {
                             vue.getpics(pid, type);
                         }
-                    })
+                    });
                 },
+
                 getFile: function(event) {
                     this.file = event.target.files[0];
                 }
@@ -138,7 +159,7 @@
                                     <a title="点击查看原图" :href="sp.src"><img height="50px" :src="sp.src"></a>
                                 </td>
                                 <td>
-                                    <a href="#nowhere" @click='deleteBean(sp.id, "single")'><span class="glyphicon glyphicon-trash"></span></a>
+                                    <a href="#nowhere" @click='deleteBean(sp.id, "single", sp.name)'><span class="glyphicon glyphicon-trash"></span></a>
                                 </td>
                             </tr>
                         </tbody>
@@ -185,7 +206,7 @@
                                     <a title="点击查看原图" :href="dp.src"><img height="50px" :src="dp.src"></a>
                                 </td>
                                 <td>
-                                    <a href="#nowhere" @click='deleteBean(dp.id, "detail")'><span class="glyphicon glyphicon-trash"></span></a>
+                                    <a href="#nowhere" @click='deleteBean(dp.id, "detail", dp.name)'><span class="glyphicon glyphicon-trash"></span></a>
                                 </td>
                             </tr>
                         </tbody>

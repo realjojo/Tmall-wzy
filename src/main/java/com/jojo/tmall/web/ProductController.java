@@ -19,13 +19,14 @@ import java.io.IOException;
 
 @RestController
 @Api(tags = "Product", description = "Product相关的操作")
+@RequestMapping("/products")
 public class ProductController {
 
     @Autowired
     ProductService productService;
 
     @ApiOperation(value = "获取product列表")
-    @GetMapping("/categories/{cid}/products")
+    @GetMapping("/list/{cid}")
     public Page4Navigator<Product> list(@PathVariable("cid") int cid, @RequestParam(value = "start", defaultValue = "0") int start, @RequestParam(value = "size", defaultValue = "5") int size) throws Exception {
         start = start < 0 ? 0 : start;
         Page4Navigator<Product> page = productService.list(cid, start, size, 5);
@@ -33,13 +34,13 @@ public class ProductController {
     }
 
     @ApiOperation(value = "获取某个product")
-    @GetMapping("/products/{id}")
+    @GetMapping("/get/{id}")
     public Product get(@PathVariable("id") int id) {
         return productService.get(id);
     }
 
     @ApiOperation(value = "增加product")
-    @PostMapping("/products")
+    @PostMapping("/add")
     public Object add(MultipartFile image, HttpServletRequest request) throws Exception {
         JSONObject jsonObject = JSONObject.fromObject(request.getParameter("product"));
         Product p = (Product) JSONObject.toBean(jsonObject, Product.class);
@@ -49,14 +50,14 @@ public class ProductController {
     }
 
     @ApiOperation(value = "删除product")
-    @DeleteMapping("/products/{id}")
+    @DeleteMapping("/delete/{id}")
     public String delete(@PathVariable("id") int id) {
         productService.delete(id);
         return null;
     }
 
     @ApiOperation(value = "修改product")
-    @PutMapping("/products")
+    @PutMapping("/update")
     public Object update(@RequestBody Product product) throws Exception {
         productService.update(product);
         return product;

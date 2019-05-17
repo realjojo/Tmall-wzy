@@ -13,7 +13,7 @@
             data: {
                 uri: 'propertyvalues',
                 listURL: 'admin_product_list',
-               beans: [],
+                beans: [],
                 category: '',
                 product: '',
                 properties: []
@@ -25,18 +25,18 @@
             },
             methods: {
                 getCategory: function(cid) {
-                    var url = "categories/" + cid;
+                    let url = "categories/get/" + cid;
                     axios.get(url).then(function (response) {
                         vue.category = response.data;
                     });
                 },
                 getProperty: function(cid) {
-                    var url = "categories/" + cid + "/all_properties";
+                    let url = "properties/get_all/" + cid;
                     axios.get(url).then(function(response) {
                         vue.properties = response.data;
-                        var params = [];
-                        for(var i in vue.properties) {
-                            var p = { product: '', property: '', value: '' };
+                        let params = [];
+                        for(let i in vue.properties) {
+                            let p = { product: '', property: '', value: '' };
                             p.product = vue.product;
                             p.property = vue.properties[i];
                             params.push(p);
@@ -46,13 +46,13 @@
                     });
                 },
                 getProduct: function(pid) {
-                    var url = "products/" + pid;
+                    let url = "products/get/" + pid;
                     axios.get(url).then(function(response) {
                         vue.product = response.data;
                     });
                 },
                 getPropertyValue: function(cid, pid) {
-                    var url = this.uri + "/" + pid;
+                    let url = this.uri + "/get_all/" + pid;
                     axios.get(url).then(function(response) {
                         if(response.data.length != 0) {
                             vue.beans = response.data;
@@ -66,7 +66,7 @@
                         if(!checkEmpty(vue.beans[i].value, vue.beans[i].property.name))
                             return;
                     }
-                    var url = this.uri;
+                    let url = this.uri + "/update";
                     axios.put(url, vue.beans).then(function(response){
                         location.href = vue.listURL + "?cid=" + vue.category.id;
                     });

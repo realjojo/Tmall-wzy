@@ -20,7 +20,7 @@
             },
             methods: {
                 get:function() {
-                    var url = this.uri + "/" + id;
+                    let url = this.uri + "/get/" + id;
                     axios.get(url).then(function(response) {
                         vue.bean = response.data;
                         vue.bean.original_name = response.data.name;
@@ -37,7 +37,7 @@
                         return;
                     if(!checkEmpty(this.bean.stock, "库存数量"))
                         return;
-                    var url = this.uri;
+                    let url = this.uri + "/update";
                     axios.put(url, this.bean).then(function(response){
                         location.href = vue.listURL + "?cid=" + vue.bean.category.id;
                     });

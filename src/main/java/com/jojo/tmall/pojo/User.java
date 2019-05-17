@@ -1,6 +1,7 @@
 package com.jojo.tmall.pojo;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import io.swagger.annotations.ApiModelProperty;
 
 import javax.persistence.*;
 
@@ -12,16 +13,20 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
+    @ApiModelProperty(value = "id")
     private int id;
 
     @Column(name = "name")
+    @ApiModelProperty(value = "用户名")
     private String name;
 
     @Column(name = "password")
+    @ApiModelProperty(value = "用户密码")
     private String password;
 
     @Column(name = "salt")
-    private String salt; //todo
+    @ApiModelProperty(value = "用户salt值")
+    private String salt;
 
     public void setId(int id) {
         this.id = id;

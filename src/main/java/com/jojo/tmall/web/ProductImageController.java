@@ -20,19 +20,20 @@ import java.util.List;
 
 @RestController
 @Api(tags = "ProductImage", description = "ProductImage相关的操作")
+@RequestMapping("/productimages")
 public class ProductImageController {
 
     @Autowired
     ProductImageService productImageService;
 
     @ApiOperation(value = "获取productImage列表")
-    @GetMapping("/productimages/{pid}")
+    @GetMapping("/list/{pid}")
     public List<ProductImage> list(@PathVariable("pid") int pid, @RequestParam("type") String type) {
         return productImageService.list(pid, type);
     }
 
     @ApiOperation(value = "增加productImage")
-    @PostMapping("/productimages")
+    @PostMapping("/add")
     public ProductImage add(ProductImage productImage, MultipartFile image, HttpServletRequest request) throws IOException {
         JSONObject jsonObject = JSONObject.fromObject(request.getParameter("pid"));
         Product p = (Product) JSONObject.toBean(jsonObject, Product.class);
@@ -43,12 +44,12 @@ public class ProductImageController {
     }
 
     @ApiOperation(value = "删除productImage")
-    @DeleteMapping("/productimages/{id}")
-    public String delete(@PathVariable("id") int id, @RequestParam("type") String type, HttpServletRequest request) throws Exception {
+    @DeleteMapping("/delete/{id}")
+    public String delete(@PathVariable("id") int id, @RequestParam("type") String type, @RequestParam("name") String name, HttpServletRequest request) throws Exception {
         ProductImage p = productImageService.get(id);
         productImageService.delete(id);
         File  imageFolder= new File(request.getServletContext().getRealPath("img/product" + type));
-        File file = new File(imageFolder,p.getProduct().getId() + "_" + p.getId() + p.getType() + ".jpg");
+        File file = new File(imageFolder, name);
         file.delete();
         return null;
     }
@@ -60,7 +61,7 @@ public class ProductImageController {
         } else {
             imageFolder= new File(request.getServletContext().getRealPath("img/productdetail"));
         }
-        File file = new File(imageFolder,bean.getProduct().getId() + "_" + bean.getId() + bean.getType() + ".jpg");
+        File file = new File(imageFolder, bean.getName());
         if(!file.getParentFile().exists())
             file.getParentFile().mkdirs();
         image.transferTo(file);
