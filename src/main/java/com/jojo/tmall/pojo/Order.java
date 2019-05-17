@@ -170,8 +170,4 @@ public class Order {
         return status;
     }
 
-    @Override
-    public String toString() {
-        return "Order={id:" + id + ",orderCode:" + orderCode + ",deliveryDate:" + deliveryDate + ",status:" + status + "}";
-    }
 }
