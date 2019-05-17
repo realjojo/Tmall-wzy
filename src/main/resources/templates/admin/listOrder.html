@@ -73,8 +73,12 @@
                                 orderArr[i].order.createDate = timestamp2Date(orderArr[i].order.createDate);
                             if(orderArr[i].order.payDate != null)
                                 orderArr[i].order.payDate = timestamp2Date(orderArr[i].order.payDate);
-                            if(orderArr[i].order.deliveryDate != null)
+                            if(orderArr[i].order.deliveryDate != null) {
+                                orderArr[i].not_delivery = false;
                                 orderArr[i].order.deliveryDate = timestamp2Date(orderArr[i].order.deliveryDate);
+                            } else {
+                                orderArr[i].not_delivery = true;
+                            }
                             if(orderArr[i].order.confirmDate != null)
                                 orderArr[i].order.confirmDate = timestamp2Date(orderArr[i].order.confirmDate);
                             delete orderArr[i].product;
@@ -99,6 +103,7 @@
                     vue.beans[i].order.createDate = new Date(create).toISOString();
                     vue.beans[i].order.payDate = new Date(pay).toISOString();
                     vue.beans[i].order.status = "待收货";
+                    vue.beans[i].not_delivery = false;
                     vue.updateBean = vue.beans[i].order;
                     console.log(vue.updateBean);
                     axios.put(url, this.updateBean).then(function (response) {
@@ -160,7 +165,7 @@
                         <td>{{bean.order.confirmDate}}</td>
                         <td>
                             <button class="orderPageCheckOrderItems btn btn-primary btn-xs" @click="getOrderItem(index)">查看详情</button>
-                            <button class="btn btn-primary btn-xs" @click="deliverOrder(index)">发货</button>
+                            <button class="btn btn-primary btn-xs" @click="deliverOrder(index)" v-show="bean.not_delivery">发货</button>
                         </td>
                     </tr>
                     <tr v-show="bean.showDetail">
