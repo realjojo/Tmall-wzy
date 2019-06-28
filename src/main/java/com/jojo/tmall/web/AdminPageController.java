@@ -18,7 +18,7 @@ public class AdminPageController {
 
     @GetMapping(value = "/admin_category_edit")
     public String editCategory(){
-        return "editCategory";
+        return "admin/editCategory";
     }
 
     @GetMapping(value = "/admin_property_list")
@@ -28,7 +28,7 @@ public class AdminPageController {
 
     @GetMapping(value = "/admin_property_edit")
     public String editProperty(){
-        return "editProperty";
+        return "admin/editProperty";
     }
 
     @GetMapping(value = "/admin_product_list")
@@ -38,7 +38,7 @@ public class AdminPageController {
 
     @GetMapping(value = "/admin_product_edit")
     public String editProduct(){
-        return "editProduct";
+        return "admin/editProduct";
     }
 
     @GetMapping(value = "/admin_property_value_set")

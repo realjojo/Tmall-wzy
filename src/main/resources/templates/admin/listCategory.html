@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:include="include/admin/adminHeader::html('分类管理')" ></head>
+<head th:include="include/admin/adminHeader::html('分类管理')"></head>
 <body>
-<div th:replace="include/admin/adminNavigator::html" ></div>
+<div th:replace="include/admin/adminNavigator::html"></div>
 <script>
     $(function() {
         var data4Vue = {
-            uri:'categories',
+            uri: 'categories',
             beans: [],
             bean: { id: 0, name: ''},
             pagination:{},
@@ -37,7 +37,7 @@
                     let formData = new FormData();
                     formData.append("image", this.file);
                     formData.append("name", this.bean.name);
-                    axios.post(url,formData).then(function(response) {
+                    axios.post(url, formData).then(function(response) {
                         vue.list(0);
                         vue.bean = { id: 0, name: '', hp: '0'};
                         $("#categoryPic").val('');
@@ -71,8 +71,8 @@
     });
 
 </script>
-<div id="workingArea" >
-    <h1 class="label label-info" >分类管理</h1>
+<div id="workingArea">
+    <h1 class="label label-info">分类管理</h1>
     <br>
     <br>
     <div class="listDataTableDiv">
@@ -113,7 +113,7 @@
             </tbody>
         </table>
     </div>
-    <div th:replace="include/admin/adminPage::html" ></div>
+    <div th:replace="include/admin/adminPage::html"></div>
     <div class="panel panel-warning addDiv">
         <div class="panel-heading">新增分类</div>
         <div class="panel-body">
@@ -137,6 +137,6 @@
         </div>
     </div>
 </div>
-<div th:replace="include/admin/adminFooter::html" ></div>
+<div th:replace="include/admin/adminFooter::html"></div>
 </body>
 </html>

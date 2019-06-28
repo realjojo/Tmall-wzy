@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "product")
@@ -14,37 +15,48 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    @ApiModelProperty(value = "id")
+//    @ApiModelProperty(value = "id")
     private int id;
 
     @Column(name = "name")
-    @ApiModelProperty(value = "商品名称")
+//    @ApiModelProperty(value = "商品名称")
     private String name;
 
     @Column(name = "subTitle")
-    @ApiModelProperty(value = "商品小标题")
+//    @ApiModelProperty(value = "商品小标题")
     private String subTitle;
 
     @Column(name = "originalPrice")
-    @ApiModelProperty(value = "商品原价")
+//    @ApiModelProperty(value = "商品原价")
     private float originalPrice;
 
     @Column(name = "promotePrice")
-    @ApiModelProperty(value = "商品促销价")
+//    @ApiModelProperty(value = "商品促销价")
     private float promotePrice;
 
     @Column(name = "stock")
-    @ApiModelProperty(value = "商品库存")
+//    @ApiModelProperty(value = "商品库存")
     private int stock;
 
     @ManyToOne
     @JoinColumn(name = "cid")
-    @ApiModelProperty(value = "商品对应分类信息")
+//    @ApiModelProperty(value = "商品对应分类信息")
     private Category category;
 
     @Column(name = "createDate")
-    @ApiModelProperty(value = "商品创建时间")
+//    @ApiModelProperty(value = "商品创建时间")
     private Date createDate;
+
+    @Transient
+    private ProductImage firstProductImage; //@Transient表示这是一个瞬时字段，不会被保存到数据库中
+    @Transient
+    private List<ProductImage> productSingleImages;
+    @Transient
+    private List<ProductImage> productDetailImages;
+    @Transient
+    private int reviewCount;
+    @Transient
+    private int saleCount;
 
     public void setId(int id) {
         this.id = id;
@@ -109,4 +121,13 @@ public class Product {
     public Date getCreateDate() {
         return createDate;
     }
+
+    public ProductImage getFirstProductImage() {
+        return firstProductImage;
+    }
+
+    public void setFirstProductImage(ProductImage firstProductImage) {
+        this.firstProductImage = firstProductImage;
+    }
+
 }

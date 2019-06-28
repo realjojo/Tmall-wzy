@@ -1,6 +1,7 @@
 package com.jojo.tmall.web;
 
 import com.jojo.tmall.pojo.Product;
+import com.jojo.tmall.pojo.ProductImage;
 import com.jojo.tmall.service.ProductService;
 import com.jojo.tmall.util.ImageUtil;
 import com.jojo.tmall.util.Page4Navigator;
@@ -18,14 +19,14 @@ import java.io.File;
 import java.io.IOException;
 
 @RestController
-@Api(tags = "Product", description = "Product相关的操作")
+//@Api(tags = "Product", description = "Product相关的操作")
 @RequestMapping("/products")
 public class ProductController {
 
     @Autowired
     ProductService productService;
 
-    @ApiOperation(value = "获取product列表")
+//    @ApiOperation(value = "获取product列表")
     @GetMapping("/list/{cid}")
     public Page4Navigator<Product> list(@PathVariable("cid") int cid, @RequestParam(value = "start", defaultValue = "0") int start, @RequestParam(value = "size", defaultValue = "5") int size) throws Exception {
         start = start < 0 ? 0 : start;
@@ -33,43 +34,40 @@ public class ProductController {
         return page;
     }
 
-    @ApiOperation(value = "获取某个product")
+//    @ApiOperation(value = "获取某个product")
     @GetMapping("/get/{id}")
     public Product get(@PathVariable("id") int id) {
         return productService.get(id);
     }
 
-    @ApiOperation(value = "增加product")
+//    @ApiOperation(value = "增加product")
     @PostMapping("/add")
-    public Object add(MultipartFile image, HttpServletRequest request) throws Exception {
-        JSONObject jsonObject = JSONObject.fromObject(request.getParameter("product"));
-        Product p = (Product) JSONObject.toBean(jsonObject, Product.class);
-        productService.add(p);
-        saveOrUpdateImageFile(p, image, request);
-        return p;
+    public Object add(@RequestBody Product product) throws Exception {
+        productService.add(product);
+        return product;
     }
 
-    @ApiOperation(value = "删除product")
+//    @ApiOperation(value = "删除product")
     @DeleteMapping("/delete/{id}")
     public String delete(@PathVariable("id") int id) {
         productService.delete(id);
         return null;
     }
 
-    @ApiOperation(value = "修改product")
+//    @ApiOperation(value = "修改product")
     @PutMapping("/update")
     public Object update(@RequestBody Product product) throws Exception {
         productService.update(product);
         return product;
     }
 
-    private void saveOrUpdateImageFile(Product bean, MultipartFile image, HttpServletRequest request) throws IOException {
-        File imageFolder= new File(request.getServletContext().getRealPath("img/productsingle"));
-        File file = new File(imageFolder,bean.getId() + "_0single.jpg");
-        if(!file.getParentFile().exists())
-            file.getParentFile().mkdirs();
-        image.transferTo(file);
-        BufferedImage img = ImageUtil.change2jpg(file);
-        ImageIO.write(img, "jpg", file);
-    }
+//    private void saveOrUpdateImageFile(ProductImage bean, MultipartFile image, HttpServletRequest request) throws IOException {
+//        File imageFolder= new File(request.getServletContext().getRealPath("img/productsingle"));
+//        File file = new File(imageFolder,bean.getId() + ".jpg");
+//        if(!file.getParentFile().exists())
+//            file.getParentFile().mkdirs();
+//        image.transferTo(file);
+//        BufferedImage img = ImageUtil.change2jpg(file);
+//        ImageIO.write(img, "jpg", file);
+//    }
 }

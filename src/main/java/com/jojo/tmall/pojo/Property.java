@@ -12,16 +12,16 @@ public class Property {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    @ApiModelProperty(value = "id")
+//    @ApiModelProperty(value = "id")
     private int id;
 
     @Column(name = "name")
-    @ApiModelProperty(value = "属性名称")
+//    @ApiModelProperty(value = "属性名称")
     private String name;
 
     @ManyToOne
     @JoinColumn(name = "cid")
-    @ApiModelProperty(value = "对应分类信息")
+//    @ApiModelProperty(value = "对应分类信息")
     private Category category;
 
     public String getName() {

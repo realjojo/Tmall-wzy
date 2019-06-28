@@ -1,0 +1,29 @@
+<div class="searchOutDiv" th:fragment="search">
+    <a th:href="${application.contextPath}">
+        <img id="logo" src="img/site/logo.gif" class="logo">
+    </a>
+    <form action="search" method="get">
+        <div class="searchDiv">
+            <input name="keyword" type="text" value="${param.keyword}" placeholder="时尚男鞋  太阳镜 ">
+            <button type="submit" class="searchButton">搜索</button>
+            <div class="searchBelow">
+                <span th:each="c,status: ${application.categories_below_search}" th:if="${status.index>=5 && status.index<=8}">
+                    <a th:href="@{'category?cid='+${c.id}}" th:text="${c.name}"></a>
+                    <span th:if="${status.index!=8}">|</span>
+                </span>
+                <!--<c:forEach items="${cs}" var="c" varStatus="st">-->
+                    <!--<c:if test="${st.count>=5 and st.count<=8}">-->
+                        <!--<span>-->
+                            <!--<a href="forecategory?category.id=${c.id}">-->
+                                    <!--${c.name}-->
+                            <!--</a>-->
+                            <!--<c:if test="${st.count!=8}">-->
+                                <!--<span>|</span>-->
+                            <!--</c:if>-->
+                        <!--</span>-->
+                    <!--</c:if>-->
+                <!--</c:forEach>-->
+            </div>
+        </div>
+    </form>
+</div>

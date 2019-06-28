@@ -14,56 +14,56 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    @ApiModelProperty(value = "id")
+//    @ApiModelProperty(value = "id")
     private int id;
 
     @Column(name = "orderCode")
-    @ApiModelProperty(value = "订单编号")
+//    @ApiModelProperty(value = "订单编号")
     private String orderCode;
 
     @Column(name = "address")
-    @ApiModelProperty(value = "收货地址")
+//    @ApiModelProperty(value = "收货地址")
     private String address;
 
     @Column(name = "post")
-    @ApiModelProperty(value = "收货邮编")
+//    @ApiModelProperty(value = "收货邮编")
     private String post;
 
     @Column(name = "receiver")
-    @ApiModelProperty(value = "收货人")
+//    @ApiModelProperty(value = "收货人")
     private String receiver;
 
     @Column(name = "mobile")
-    @ApiModelProperty(value = "收货手机号")
+//    @ApiModelProperty(value = "收货手机号")
     private String mobile;
 
     @Column(name = "userMessage")
-    @ApiModelProperty(value = "买家备注信息")
+//    @ApiModelProperty(value = "买家备注信息")
     private String userMessage;
 
     @Column(name = "createDate")
-    @ApiModelProperty(value = "订单创建时间")
+//    @ApiModelProperty(value = "订单创建时间")
     private Timestamp createDate;
 
     @Column(name = "payDate")
-    @ApiModelProperty(value = "订单支付时间")
+//    @ApiModelProperty(value = "订单支付时间")
     private Timestamp payDate;
 
     @Column(name = "deliveryDate")
-    @ApiModelProperty(value = "订单发货时间")
+//    @ApiModelProperty(value = "订单发货时间")
     private Timestamp deliveryDate;
 
     @Column(name = "confirmDate")
-    @ApiModelProperty(value = "订单确认收货时间")
+//    @ApiModelProperty(value = "订单确认收货时间")
     private Timestamp confirmDate;
 
     @ManyToOne
     @JoinColumn(name = "uid")
-    @ApiModelProperty(value = "买家信息")
+//    @ApiModelProperty(value = "买家信息")
     private User user;
 
     @Column(name = "status")
-    @ApiModelProperty(value = "订单状态")
+//    @ApiModelProperty(value = "订单状态")
     private String status;
 
     public void setId(int id) {

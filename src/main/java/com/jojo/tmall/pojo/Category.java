@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name="category")
@@ -13,12 +14,17 @@ public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    @ApiModelProperty(value = "id")
+//    @ApiModelProperty(value = "id")
     private int id;
 
     @Column(name = "name")
-    @ApiModelProperty(value = "分类名称")
+//    @ApiModelProperty(value = "分类名称")
     private String name;
+
+    @Transient
+    private List<Product> products;
+    @Transient
+    private List<List<Product>> productsByRow;
 
     public int getId() {
         return id;
@@ -34,5 +40,21 @@ public class Category {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
+    }
+
+    public List<List<Product>> getProductsByRow() {
+        return productsByRow;
+    }
+
+    public void setProductsByRow(List<List<Product>> productsByRow) {
+        this.productsByRow = productsByRow;
     }
 }

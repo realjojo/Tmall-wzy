@@ -11,6 +11,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class ProductService {
 
@@ -18,6 +21,8 @@ public class ProductService {
     ProductDAO productDAO;
     @Autowired
     CategoryService categoryService;
+    @Autowired
+    ProductImageService productImageService;
 
     public Page4Navigator<Product> list(int cid, int start, int size, int navigatePages) {
         Category category = categoryService.get(cid);
@@ -42,4 +47,34 @@ public class ProductService {
     public void delete(int id) {
         productDAO.deleteById(id);
     }
+
+    public void fill(List<Category> categories) {
+        for (Category category : categories) {
+            fill(category);
+        }
+    }
+
+    public void fill(Category category) {
+        List<Product> products = productDAO.findAllByCategory(category);
+        for (Product product : products) {
+            productImageService.setFirstProductImage(product);
+        }
+        category.setProducts(products);
+    }
+
+    public void fillByRow(List<Category> categories) {
+        int productNumberEachRow = 8;
+        for (Category category : categories) {
+            List<Product> products = category.getProducts();  //对每个category获取其所有的product集合,下面被拆成多行
+            List<List<Product>> productsByRow = new ArrayList<>();
+            for (int i = 0; i < products.size(); i += productNumberEachRow) {
+                int size = i + productNumberEachRow;
+                size = size > products.size() ? products.size() : size;  //size取products.size()和i+productNumberEachRow之小
+                List<Product> productsOfEachRow = products.subList(i, size);  //从所有product集合中截取i~size
+                productsByRow.add(productsOfEachRow);
+            }
+            category.setProductsByRow(productsByRow);
+        }
+    }
+
 }

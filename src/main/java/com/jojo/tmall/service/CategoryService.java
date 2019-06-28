@@ -2,6 +2,7 @@ package com.jojo.tmall.service;
 
 import com.jojo.tmall.dao.CategoryDAO;
 import com.jojo.tmall.pojo.Category;
+import com.jojo.tmall.pojo.Product;
 import com.jojo.tmall.util.Page4Navigator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -60,5 +61,14 @@ public class CategoryService {
 
     public void update(Category category) {
         categoryDAO.save(category);
+    }
+
+    public void removeCategoryFromProduct(List<Category> cs) {
+        for(Category category : cs) {
+            List<Product> pl = category.getProducts();
+            for(Product product : pl) {
+                product.setCategory(null);
+            }
+        }
     }
 }

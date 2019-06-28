@@ -13,13 +13,13 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/orderitems")
-@Api(tags = "OrderItem", description = "OrderItem相关的操作")
+//@Api(tags = "OrderItem", description = "OrderItem相关的操作")
 public class OrderItemController {
 
     @Autowired
     OrderItemService orderItemService;
 
-    @ApiOperation(value = "获取orderItem列表")
+//    @ApiOperation(value = "获取orderItem列表")
     @GetMapping("/list")
     public Page4Navigator<OrderItem> list(@RequestParam(value = "start", defaultValue = "0") int start, @RequestParam(value = "size", defaultValue = "5") int size) {
         start = start < 0 ? 0 : start;
@@ -27,13 +27,13 @@ public class OrderItemController {
         return page;
     }
 
-    @ApiOperation(value = "获取某个orderItem")
+//    @ApiOperation(value = "获取某个orderItem")
     @GetMapping("/get/{oid}")
     public OrderItem getByOrderId(@PathVariable("oid") int oid) {
         return orderItemService.getByOrderId(oid);
     }
 
-    @ApiOperation(value = "获取所有orderItem")
+//    @ApiOperation(value = "获取所有orderItem")
     @GetMapping("/all")
     public List<OrderItem> getAll() {
         return orderItemService.getAll();

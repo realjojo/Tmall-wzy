@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="include/header::header"></head>
+<body>
+<div id="workingArea">
+    <div th:replace="include/top::top"></div>
+    <div th:replace="include/search::search"></div>
+    <div th:replace="include/home/homePage::homePage"></div>
+    <div th:replace="include/footer::footer"></div>
+</div>
+</body>
+</html>

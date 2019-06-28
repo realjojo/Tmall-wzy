@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:include="include/admin/adminHeader::html('订单管理')" ></head>
+<head th:include="include/admin/adminHeader::html('订单管理')"></head>
 <body>
-<div th:replace="include/admin/adminNavigator::html" ></div>
+<div th:replace="include/admin/adminNavigator::html"></div>
 <script>
     $(function() {
         var formatDate = function (date) { //转换成"yyyy-MM-dd HH:mm:ss"格式的日期
@@ -66,7 +66,7 @@
                             orderArr[i] = oneOrder[0];
                             orderArr[i].id = orderArr[i].order.id;
                             orderArr[i].showDetail = false;
-                            orderArr[i].priceSum = product_price;
+                            orderArr[i].priceSum = product_price.toFixed(2);
                             orderArr[i].numberSum = product_num;
                             orderArr[i].orderItems = oneOrderItems;
                             if(orderArr[i].order.createDate != null)
@@ -131,8 +131,8 @@
     });
 
 </script>
-<div id="workingArea" >
-    <h1 class="label label-info" >订单管理</h1>
+<div id="workingArea">
+    <h1 class="label label-info">订单管理</h1>
     <br>
     <br>
     <div class="listDataTableDiv">
@@ -194,8 +194,8 @@
             </tbody>
         </table>
     </div>
-    <div th:replace="include/admin/adminPage::html" ></div>
+    <div th:replace="include/admin/adminPage::html"></div>
 </div>
-<div th:replace="include/admin/adminFooter::html" ></div>
+<div th:replace="include/admin/adminFooter::html"></div>
 </body>
 </html>

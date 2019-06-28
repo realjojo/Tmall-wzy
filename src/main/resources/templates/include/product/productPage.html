@@ -1,0 +1,8 @@
+<div th:fragment="productPage">
+    <div class="categoryPictureInProductPageDiv">
+        <img class="categoryPictureInProductPage" src="img/category/${product.category.id}.jpg">
+    </div>
+    <div th:replace="include/product/imgAndInfo::imgAndInfo"></div>
+    <div th:replace="include/product/productReview::productReview"></div>
+    <div th:replace="include/product/productDetail::productDetail"></div>
+</div>

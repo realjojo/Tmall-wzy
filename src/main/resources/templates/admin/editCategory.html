@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:include="include/admin/adminHeader::html('编辑分类')" ></head>
+<head th:include="include/admin/adminHeader::html('编辑分类')"></head>
 <body>
-<div th:replace="include/admin/adminNavigator::html" ></div>
+<div th:replace="include/admin/adminNavigator::html"></div>
 <script>
     $(function(){
         var data4Vue = {
             uri: 'categories',
-            listURL:'admin_category_list',
+            listURL: 'admin_category_list',
             bean: { id: 0, name: '', original_name: '' },
-            file:''
+            file: ''
         };
 
         var vue = new Vue({
@@ -69,7 +69,7 @@
                 </tr>
                 <tr class="submitTR">
                     <td colspan="2" align="center">
-                        <!--<input type="hidden" name="id"   v-model.trim="bean.id" >-->
+                        <!--<input type="hidden" name="id"   v-model.trim="bean.id">-->
                         <a href="#nowhere" class="btn btn-success" @click="update">提交</a>
                     </td>
                 </tr>
@@ -78,6 +78,6 @@
     </div>
 </div>
 
-<div th:replace="include/admin/adminFooter::html" ></div>
+<div th:replace="include/admin/adminFooter::html"></div>
 </body>
 </html>

@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:include="include/admin/adminHeader::html('属性管理')"></head>
 <body>
-<div th:replace="include/admin/adminNavigator::html" ></div>
+<div th:replace="include/admin/adminNavigator::html"></div>
 <script>
     $(function(){
         var cid = getUrlParms("cid");
@@ -69,7 +69,7 @@
     });
 
 </script>
-<div id="workingArea" >
+<div id="workingArea">
     <ol class="breadcrumb">
         <li><a href="admin_category_list">所有分类</a></li>
         <li class="active">{{category.name}}</li>
@@ -98,7 +98,7 @@
             </tbody>
         </table>
     </div>
-    <div th:replace="include/admin/adminPage::html" ></div>
+    <div th:replace="include/admin/adminPage::html"></div>
     <div class="panel panel-warning addDiv">
         <div class="panel-heading">新增属性</div>
         <div class="panel-body">
@@ -117,6 +117,6 @@
     </div>
 </div>
 
-<div th:replace="include/admin/adminFooter::html" ></div>
+<div th:replace="include/admin/adminFooter::html"></div>
 </body>
 </html>

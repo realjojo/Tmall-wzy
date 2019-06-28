@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:include="include/admin/adminHeader::html('用户管理')" ></head>
+<head th:include="include/admin/adminHeader::html('用户管理')"></head>
 <body>
-<div th:replace="include/admin/adminNavigator::html" ></div>
+<div th:replace="include/admin/adminNavigator::html"></div>
 <script>
     $(function() {
         var vue = new Vue({
@@ -35,8 +35,8 @@
     });
 
 </script>
-<div id="workingArea" >
-    <h1 class="label label-info" >用户管理</h1>
+<div id="workingArea">
+    <h1 class="label label-info">用户管理</h1>
     <br>
     <br>
     <div class="listDataTableDiv">
@@ -57,8 +57,8 @@
             </tbody>
         </table>
     </div>
-    <div th:replace="include/admin/adminPage::html" ></div>
+    <div th:replace="include/admin/adminPage::html"></div>
 </div>
-<div th:replace="include/admin/adminFooter::html" ></div>
+<div th:replace="include/admin/adminFooter::html"></div>
 </body>
 </html>

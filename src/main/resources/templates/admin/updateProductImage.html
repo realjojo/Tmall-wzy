@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:include="include/admin/adminHeader::html('产品图片管理')" ></head>
+<head th:include="include/admin/adminHeader::html('产品图片管理')"></head>
 <body>
-<div th:replace="include/admin/adminNavigator::html" ></div>
+<div th:replace="include/admin/adminNavigator::html"></div>
 <script>
     $(function(){
         var cid = getUrlParms("cid");
@@ -20,8 +20,8 @@
             created: function() {
                 this.getCategory(cid);
                 this.getProduct(pid);
-                this.getpics(pid, "single");
-                this.getpics(pid, "detail");
+                this.getpics(pid, "type_single");
+                this.getpics(pid, "type_detail");
             },
             methods: {
                 getCategory: function(cid) {
@@ -42,15 +42,15 @@
                     let url = this.uri + "/list/" + pid + "?type=" + type;
                     axios.get(url).then(function (response) {
                         console.log(response.data);
-                        if(type == "single") {
+                        if(type == "type_single") {
                             vue.singlePics = response.data;
                             for(let i = 0; i < vue.singlePics.length; i++) {
-                                vue.singlePics[i].src = "img/productsingle/" + vue.singlePics[i].name;
+                                vue.singlePics[i].src = "img/productsingle/" + vue.singlePics[i].id + ".jpg";
                             }
-                        } else if(type == "detail") {
+                        } else if(type == "type_detail") {
                             vue.detailPics = response.data;
                             for(let i = 0; i < vue.detailPics.length; i++) {
-                                vue.detailPics[i].src = "img/productdetail/" + vue.detailPics[i].name;
+                                vue.detailPics[i].src = "img/productdetail/" + vue.detailPics[i].id + ".jpg";
                             }
                         }
                     });
@@ -61,36 +61,36 @@
                         return;
                     let url = this.uri + "/add";
                     let formData = new FormData();
-                    let num, img_name;
-                    if(type == "single") {
-                        if(vue.singlePics.length == 0) {
-                            img_name = vue.product.id + "_1single.jpg";
-                        } else {
-                            num = vue.singlePics[vue.singlePics.length - 1].id + 1;
-                            img_name = vue.product.id + "_" + num + "single.jpg";
-                        }
-                    } else if(type == "detail") {
-                        if(vue.detailPics.length == 0) {
-                            img_name = vue.product.id + "_1detail.jpg";
-                        } else {
-                            num = vue.detailPics[vue.detailPics.length - 1].id + 1;
-                            img_name = vue.product.id + "_" + num + "detail.jpg";
-                        }
-                    }
+                    // let num, img_name;
+                    // if(type == "type_single") {
+                    //     if(vue.singlePics.length == 0) {
+                    //         img_name = vue.product.id + "_1single.jpg";
+                    //     } else {
+                    //         num = vue.singlePics[vue.singlePics.length - 1].id + 1;
+                    //         img_name = vue.product.id + "_" + num + "single.jpg";
+                    //     }
+                    // } else if(type == "type_detail") {
+                    //     if(vue.detailPics.length == 0) {
+                    //         img_name = vue.product.id + "_1detail.jpg";
+                    //     } else {
+                    //         num = vue.detailPics[vue.detailPics.length - 1].id + 1;
+                    //         img_name = vue.product.id + "_" + num + "detail.jpg";
+                    //     }
+                    // }
                     formData.append("image", this.file);
                     formData.append("pid", JSON.stringify(vue.product));
                     formData.append("type", type);
-                    formData.append("name", img_name);
+                    // formData.append("name", img_name);
                     axios.post(url, formData).then(function (response) {
                         console.log(response.data);
                         vue.getpics(pid, type);
                     });
                 },
 
-                deleteBean: function(id, type, img_name) {
+                deleteBean: function(id, type) {
                     if(!checkDeleteLink())
                         return;
-                    let url = this.uri + "/delete/" + id + "?type=" + type + "&name=" + img_name;
+                    let url = this.uri + "/delete/" + id + "?type=" + type;
                     axios.delete(url).then(function (response) {
                         if(0 != response.data.length) {
                             alert(response.data);
@@ -137,7 +137,7 @@
                                     </tr>
                                     <tr class="submitTR">
                                         <td align="center">
-                                            <a class="btn btn-success" @click="add('single','产品单个图片')" href="#nowhere">提交</a>
+                                            <a class="btn btn-success" @click="add('type_single','产品单个图片')" href="#nowhere">提交</a>
                                         </td>
                                     </tr>
                                 </table>
@@ -159,7 +159,7 @@
                                     <a title="点击查看原图" :href="sp.src"><img height="50px" :src="sp.src"></a>
                                 </td>
                                 <td>
-                                    <a href="#nowhere" @click='deleteBean(sp.id, "single", sp.name)'><span class="glyphicon glyphicon-trash"></span></a>
+                                    <a href="#nowhere" @click='deleteBean(sp.id, "type_single")'><span class="glyphicon glyphicon-trash"></span></a>
                                 </td>
                             </tr>
                         </tbody>
@@ -184,7 +184,7 @@
                                     </tr>
                                     <tr class="submitTR">
                                         <td align="center">
-                                            <a class="btn btn-success" @click="add('detail','产品详情图片')" href="#nowhere">提交</a>
+                                            <a class="btn btn-success" @click="add('type_detail','产品详情图片')" href="#nowhere">提交</a>
                                         </td>
                                     </tr>
                                 </table>
@@ -206,7 +206,7 @@
                                     <a title="点击查看原图" :href="dp.src"><img height="50px" :src="dp.src"></a>
                                 </td>
                                 <td>
-                                    <a href="#nowhere" @click='deleteBean(dp.id, "detail", dp.name)'><span class="glyphicon glyphicon-trash"></span></a>
+                                    <a href="#nowhere" @click='deleteBean(dp.id, "type_detail")'><span class="glyphicon glyphicon-trash"></span></a>
                                 </td>
                             </tr>
                         </tbody>
@@ -217,6 +217,6 @@
     </table>
 </div>
 
-<div th:replace="include/admin/adminFooter::html" ></div>
+<div th:replace="include/admin/adminFooter::html"></div>
 </body>
 </html>

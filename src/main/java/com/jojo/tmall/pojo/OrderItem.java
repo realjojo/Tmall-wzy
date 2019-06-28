@@ -13,26 +13,26 @@ public class OrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    @ApiModelProperty(value = "id")
+//    @ApiModelProperty(value = "id")
     private int id;
 
     @ManyToOne
     @JoinColumn(name = "pid")
-    @ApiModelProperty(value = "订单详情：商品信息")
+//    @ApiModelProperty(value = "订单详情：商品信息")
     private Product product;
 
     @ManyToOne
     @JoinColumn(name = "oid")
-    @ApiModelProperty(value = "订单详情：订单信息")
+//    @ApiModelProperty(value = "订单详情：订单信息")
     private Order order;
 
     @ManyToOne
     @JoinColumn(name = "uid")
-    @ApiModelProperty(value = "订单详情：买家信息")
+//    @ApiModelProperty(value = "订单详情：买家信息")
     private User user;
 
     @Column(name = "number")
-    @ApiModelProperty(value = "订单详情：购买数量")
+//    @ApiModelProperty(value = "订单详情：购买数量")
     private int number;
 
     public void setId(int id) {

@@ -17,14 +17,14 @@ import java.io.File;
 import java.io.IOException;
 
 @RestController
-@Api(tags = "Category", description = "Category相关的操作")
+//@Api(tags = "Category", description = "Category相关的操作")
 @RequestMapping("/categories")
 public class CategoryController {
 
     @Autowired
     CategoryService categoryService;
 
-    @ApiOperation(value = "获取category列表")
+//    @ApiOperation(value = "获取category列表")
     @GetMapping("/list")
     public Page4Navigator<Category> list(@RequestParam(value = "start", defaultValue = "0") int start, @RequestParam(value = "size", defaultValue = "5") int size) throws Exception {
         start = start < 0 ? 0 : start;
@@ -42,7 +42,7 @@ public class CategoryController {
      * @return
      * @throws IOException
      */
-    @ApiOperation(value = "添加category")
+//    @ApiOperation(value = "添加category")
     @PostMapping("/add")
     public Object add(Category bean, MultipartFile image, HttpServletRequest request) throws IOException {
         categoryService.add(bean);
@@ -52,7 +52,7 @@ public class CategoryController {
 
     private void saveOrUpdateImageFile(Category bean, MultipartFile image, HttpServletRequest request) throws IOException {
         File imageFolder= new File(request.getServletContext().getRealPath("img/category"));
-        File file = new File(imageFolder,bean.getId()+".jpg");
+        File file = new File(imageFolder,bean.getId() + ".jpg");
         if(!file.getParentFile().exists())
             file.getParentFile().mkdirs();
         image.transferTo(file);
@@ -60,7 +60,7 @@ public class CategoryController {
         ImageIO.write(img, "jpg", file);
     }
 
-    @ApiOperation(value = "删除category")
+//    @ApiOperation(value = "删除category")
     @DeleteMapping("/delete/{id}")
     public String delete(@PathVariable("id") int id, HttpServletRequest request) throws Exception {
         categoryService.delete(id);
@@ -70,14 +70,14 @@ public class CategoryController {
         return null;
     }
 
-    @ApiOperation(value = "获取某个category")
+//    @ApiOperation(value = "获取某个category")
     @GetMapping("/get/{id}")
     public Category get(@PathVariable("id") int id) throws Exception {
         Category bean = categoryService.get(id);
         return bean;
     }
 
-    @ApiOperation(value = "修改category")
+//    @ApiOperation(value = "修改category")
     @PutMapping("/update")
     public Object update(Category bean, MultipartFile image, HttpServletRequest request) throws IOException {
         String name = request.getParameter("name");
