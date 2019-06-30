@@ -5,11 +5,11 @@
             <span class="categoryTitle">{{c.name}}</span>
             <br>
             <div class="productItem" v-for="p, index in c.products" v-if="index<5">
-                <a :href="'product?pid=' + p.id">
+                <a :href="'product_page?pid=' + p.id">
                     <img width="100px" :src="'img/productsingle/' + p.firstProductImage.id + '.jpg'">
                 </a>
 
-                <a class="productItemDescLink" :href="'product?pid=' + p.id">
+                <a class="productItemDescLink" :href="'product_page?pid=' + p.id">
                     <span class="productItemDesc">[热销]{{p.name | subStringFilter(0, 20)}}</span>
                 </a>
 

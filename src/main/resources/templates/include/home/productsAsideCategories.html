@@ -11,7 +11,7 @@
     </script>
     <div :cid="c.id" class="productsAsideCategories" v-for="c in categories">
         <div class="row show1" v-for="ps in c.productsByRow">
-            <a :href="'product?pid=' + p.id" v-for="p in ps" v-if="p.subTitle.length!=0">
+            <a :href="'product_page?pid=' + p.id" v-for="p in ps" v-if="p.subTitle.length!=0">
                 {{p.subTitle | subTitleFilter}}
             </a>
             <div class="seperator"></div>

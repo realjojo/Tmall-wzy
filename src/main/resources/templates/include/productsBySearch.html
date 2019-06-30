@@ -1,30 +1,36 @@
 <div class="searchProducts" th:fragment="productsBySearch">
 
-    <c:forEach items="${products}" var="p">
+    <!--todo: 获取搜索结果products，并循环渲染-->
+    <div th:each="p, status: ${application.products_below_search}">
         <div class="productUnit" price="${p.promotePrice}">
-            <a href="foreproduct?product.id=${p.id}">
-                <img class="productImage" src="img/productSingle/${p.firstProductImage.id}.jpg">
+            <a :href="'product_page?pid=' + p.id">
+                <img class="productImage" :src="'img/productsingle/' + p.firstProductImage.id + '.jpg'">
             </a>
-            <span class="productPrice">¥<fmt:formatNumber type="number" value="${p.promotePrice}"
+            <span class="productPrice">¥<fmt:formatNumber type="number" value="p.promotePrice"
                                                           minFractionDigits="2"/></span>
-            <a class="productLink" href="foreproduct?product.id=${p.id}">
-                ${fn:substring(p.name, 0, 50)}
+            <a class="productLink" :href="'product_page?pid=' + p.id">
+                {{fn:substring(p.name, 0, 50)}}
             </a>
 
-            <a class="tmallLink" href="foreproduct?product.id=${p.id}">天猫专卖</a>
+            <a class="tmallLink" :href="'product_page?pid=' + p.id">天猫专卖</a>
 
             <div class="show1 productInfo">
-                <span class="monthDeal ">月成交 <span class="productDealNumber">${p.saleCount}笔</span></span>
-                <span class="productReview">评价<span class="productReviewNumber">${p.reviewCount}</span></span>
+                <span class="monthDeal ">月成交 <span class="productDealNumber">{{p.saleCount}}笔</span></span>
+                <span class="productReview">评价<span class="productReviewNumber">{{p.reviewCount}}</span></span>
                 <span class="wangwang"><img src="img/site/wangwang.png"></span>
             </div>
-
         </div>
-    </c:forEach>
-    <c:if test="${empty ps}">
-        <div class="noMatch">没有满足条件的产品
-            <div>
-    </c:if>
+    </div>
+
+    <div th:if="${ps.length==0}">
+        <div class="noMatch">没有满足条件的产品<div>
+    </div>
+    <!--<c:forEach items="${products}" var="p">-->
+        <!---->
+    <!--</c:forEach>-->
+    <!--<c:if test="${empty ps}">-->
+        <!---->
+    <!--</c:if>-->
 
     <div style="clear:both"></div>
 </div>
