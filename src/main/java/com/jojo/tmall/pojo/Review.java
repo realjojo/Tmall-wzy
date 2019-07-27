@@ -22,7 +22,7 @@ public class Review {
 //    @ApiModelProperty(value = "id")
     private int id;
 
-    @Column(name = "name")
+    @Column(name = "content")
 //    @ApiModelProperty(value = "评价内容")
     private String content;
 

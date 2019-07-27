@@ -29,8 +29,8 @@ public class OrderItemController {
 
 //    @ApiOperation(value = "获取某个orderItem")
     @GetMapping("/get/{oid}")
-    public OrderItem getByOrderId(@PathVariable("oid") int oid) {
-        return orderItemService.getByOrderId(oid);
+    public OrderItem getById(@PathVariable("oid") int oid) {
+        return orderItemService.getById(oid);
     }
 
 //    @ApiOperation(value = "获取所有orderItem")

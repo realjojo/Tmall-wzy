@@ -2,7 +2,9 @@ package com.jojo.tmall.service;
 
 import com.jojo.tmall.dao.ProductDAO;
 import com.jojo.tmall.pojo.Category;
+import com.jojo.tmall.pojo.OrderItem;
 import com.jojo.tmall.pojo.Product;
+import com.jojo.tmall.pojo.Review;
 import com.jojo.tmall.util.Page4Navigator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -23,6 +25,10 @@ public class ProductService {
     CategoryService categoryService;
     @Autowired
     ProductImageService productImageService;
+    @Autowired
+    OrderItemService orderItemService;
+    @Autowired
+    ReviewService reviewService;
 
     public Page4Navigator<Product> list(int cid, int start, int size, int navigatePages) {
         Category category = categoryService.get(cid);
@@ -74,6 +80,25 @@ public class ProductService {
                 productsByRow.add(productsOfEachRow);
             }
             category.setProductsByRow(productsByRow);
+        }
+    }
+
+    public void setSaleAndReviewNumber(Product product) {
+        List<OrderItem> orderItemList = orderItemService.listByProduct(product);
+        int saleCount = 0;
+        for (OrderItem oi : orderItemList) {
+            saleCount += oi.getNumber();
+        }
+        product.setSaleCount(saleCount);
+
+        List<Review> reviewList = reviewService.listByProduct(product);
+        int reviewCount = reviewList.size();
+        product.setReviewCount(reviewCount);
+    }
+
+    public void setSaleAndReviewNumber(List<Product> products) {
+        for (Product product : products) {
+            setSaleAndReviewNumber(product);
         }
     }
 

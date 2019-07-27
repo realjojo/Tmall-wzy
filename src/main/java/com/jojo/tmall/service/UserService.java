@@ -90,4 +90,19 @@ public class UserService {
         userDAO.save(user);
     }
 
+//    public boolean checkLogin(User user) {
+//        User u = userDAO.findByNameAndPassword(user.getName(), user.getPassword());
+//        if(u == null) {
+//            return false;
+//        } else {
+//            String token = u.getToken();
+//            //todo: token_create_at 时间是否超时
+//            if(token == null || token == "") {
+//                return false;
+//            } else {
+//
+//            }
+//        }
+//    }
+
 }

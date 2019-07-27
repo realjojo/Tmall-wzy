@@ -24,10 +24,6 @@ public class User {
 //    @ApiModelProperty(value = "用户密码")
     private String password;
 
-    @Column(name = "salt")
-//    @ApiModelProperty(value = "用户salt值")
-    private String salt;
-
     @Column(name = "token_create_at")
 //    @ApiModelProperty(value = "token生成时间")
     private String tokenCreateAt;

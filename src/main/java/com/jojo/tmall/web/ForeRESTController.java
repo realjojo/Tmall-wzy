@@ -1,13 +1,7 @@
 package com.jojo.tmall.web;
 
-import com.jojo.tmall.pojo.Category;
-import com.jojo.tmall.pojo.Product;
-import com.jojo.tmall.pojo.ResponseEnum;
-import com.jojo.tmall.pojo.User;
-import com.jojo.tmall.service.CategoryService;
-import com.jojo.tmall.service.ProductImageService;
-import com.jojo.tmall.service.ProductService;
-import com.jojo.tmall.service.UserService;
+import com.jojo.tmall.pojo.*;
+import com.jojo.tmall.service.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +26,8 @@ public class ForeRESTController {
     UserService userService;
     @Autowired
     ProductImageService productImageService;
+    @Autowired
+    PropertyValueService propertyValueService;
 
     @GetMapping("/forehome")
     public Object home() {
@@ -58,27 +54,64 @@ public class ForeRESTController {
         return userService.userLogin(user);
     }
 
-    @GetMapping("/forelogout")
+    @DeleteMapping("/forelogout")
     public void logout(@RequestParam(value = "token", defaultValue = "noToken") String token) throws Exception {
         userService.userLogout(token);
     }
 
-//    public String product(@RequestBody Product product) {
-//        t2p(product);
-//
-//        productImageService.setFirstProductImage(product);
-//        productSingleImages = productImageService.list("product", product, "type", ProductImageService.type_single);
-//        productDetailImages = productImageService.list("product", product, "type", ProductImageService.type_detail);
-//        product.setProductSingleImages(productSingleImages);
-//        product.setProductDetailImages(productDetailImages);
-//
-//        propertyValues = propertyValueService.listByParent(product);
-//
-//        reviews = reviewService.listByParent(product);
-//
-//        productService.setSaleAndReviewNumber(product);
-//
-//        return "";
+    @GetMapping("/foreproduct/{pid}")
+    public Product product(@PathVariable("pid") int pid) {
+        Product product = productService.get(pid);
+        productImageService.setFirstProductImage(product);
+        //todo
+        product.setProductSingleImages(productImageService.list(pid, ProductImageService.TYPE_SINGLE));
+        product.setProductDetailImages(productImageService.list(pid, ProductImageService.TYPE_DETAIL));
+        productService.setSaleAndReviewNumber(product);
+        System.out.println("myyyyyy:" + product);
+        return product;
+    }
+
+    @GetMapping("/forepropertyvalues/{pid}")
+    public List<PropertyValue> getPropertyValues(@PathVariable("pid") int pid) {
+        List<PropertyValue> propertyValueList = propertyValueService.getAll(pid);
+        return propertyValueList;
+    }
+
+//    @GetMapping("/forechecklogin")
+//    public boolean checkLogin(@RequestBody User user) {
+//        return userService.checkLogin(user);
 //    }
 
+//    @GetMapping("/forecategory/{cid}")
+//    public String category(@PathVariable("cid") int cid) {
+//        Category category = categoryService.get(cid);
+//        productService.fill(category);
+//        productService.setSaleAndReviewNumber(category.getProducts());
+//
+//        if (sort != null) {
+//            switch (sort) {
+//                case "review"://评价数量多的放前面
+//                    Collections.sort(category.getProducts(), new Comparator<Product>() {
+//                        @Override
+//                        public int compare(Product o1, Product o2) {
+//                            return o2.getReviewCount() - o1.getReviewCount();
+//                        }
+//                    });
+//                    break;
+//                case "date"://新创建的放前面，即创建日期比较晚的在前
+//                    Collections.sort(category.getProducts(), ((o1, o2) -> o1.getCreateDate().compareTo(o2.getCreateDate())));
+//                    break;
+//                case "saleCount"://销量高的放前面
+//                    Collections.sort(category.getProducts(), ((o1, o2) -> o2.getSaleCount() - o1.getSaleCount()));
+//                    break;
+//                case "price"://价格低的放前面
+//                    Collections.sort(category.getProducts(), ((o1, o2) -> (int) (o1.getPromotePrice() - o2.getPromotePrice())));
+//                    break;
+//                case "all"://把 销量*评价 高的放前面
+//                    Collections.sort(category.getProducts(), ((o1, o2) -> o2.getReviewCount() * o2.getSaleCount() - o1.getReviewCount() * o1.getSaleCount()));
+//                    break;
+//            }
+//        }
+//        return "category.jsp";
+//    }
 }

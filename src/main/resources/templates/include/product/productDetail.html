@@ -1,17 +1,16 @@
 <div class="productDetailDiv" th:fragment="productDetail">
     <div class="productDetailTopPart">
         <a href="#nowhere" class="productDetailTopPartSelectedLink selected">商品详情</a>
-        <a href="#nowhere" class="productDetailTopReviewLink">累计评价 <span
-                class="productDetailTopReviewLinkNumber">${p.reviewCount}</span> </a>
+        <a href="#nowhere" class="productDetailTopReviewLink">
+            累计评价
+            <span class="productDetailTopReviewLinkNumber">{{p.reviewCount}}</span> </a>
     </div>
 
     <div class="productParamterPart">
         <div class="productParamter">产品参数：</div>
 
         <div class="productParamterList">
-            <c:forEach items="${propertyValues}" var="pv">
-                <span>${pv.property.name}:  ${fn:substring(pv.value, 0, 10)} </span>
-            </c:forEach>
+            <span v-for="pv in propertyValues">{{pv.property.name}}:  {{pv.value}}</span>
         </div>
         <div style="clear:both"></div>
     </div>

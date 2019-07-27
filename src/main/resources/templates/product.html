@@ -2,9 +2,11 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:include="include/header::header"></head>
 <body>
-    <div th:replace="include/top::top"></div>
-    <div th:replace="include/simpleSearch::simpleSearch"></div>
-    <div th:replace="include/product/productPage::productPage"></div>
-    <div th:replace="include/footer::footer"></div>
+    <div id="workingArea">
+        <div th:replace="include/top::top"></div>
+        <div th:replace="include/simpleSearch::simpleSearch"></div>
+        <div th:replace="include/product/productPage::productPage"></div>
+        <div th:replace="include/footer::footer"></div>
+    </div>
 </body>
 </html>

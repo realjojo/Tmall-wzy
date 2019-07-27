@@ -2,6 +2,7 @@ package com.jojo.tmall.service;
 
 import com.jojo.tmall.dao.OrderItemDAO;
 import com.jojo.tmall.pojo.OrderItem;
+import com.jojo.tmall.pojo.Product;
 import com.jojo.tmall.util.Page4Navigator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -25,11 +26,16 @@ public class OrderItemService {
         return new Page4Navigator<OrderItem>(pageFromJPA,navigatePages);
     }
 
-    public OrderItem getByOrderId(int oid) {
-        return orderItemDAO.getByOrderId(oid);
+    public OrderItem getById(int oid) {
+        return orderItemDAO.getById(oid);
     }
 
     public List<OrderItem> getAll() {
         return orderItemDAO.findAll();
     }
+
+    public List<OrderItem> listByProduct(Product product) {
+        return orderItemDAO.findAllByProduct(product);
+    }
+
 }

@@ -10,10 +10,10 @@
                 </a>
 
                 <a class="productItemDescLink" :href="'product_page?pid=' + p.id">
-                    <span class="productItemDesc">[热销]{{p.name | subStringFilter(0, 20)}}</span>
+                    <span class="productItemDesc"><span style="font-weight: bolder; color: #C60A0A; font-size: 14px">[热销] </span>{{p.name | subStringFilter(0, 20)}}</span>
                 </a>
 
-                <span class="productPrice">{{p.promotePrice | formatMoneyFilter}}</span>
+                <span class="productPrice">¥ {{p.promotePrice | formatMoneyFilter}}</span>
             </div>
             <div style="clear: both"></div>
         </div>

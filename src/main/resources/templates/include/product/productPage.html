@@ -1,6 +1,88 @@
 <div th:fragment="productPage">
+    <script>
+        function productPageImgListener() {
+            $("img.smallImage").mouseenter(function () {
+                let bigImageURL = $(this).attr("bigImageURL");
+                $("img.bigImg").attr("src", bigImageURL);
+            });
+
+            $("img.bigImg").load(
+                function () {
+                    $("img.smallImage").each(function () {
+                        let bigImageURL = $(this).attr("bigImageURL");
+                        let img = new Image();
+                        img.src = bigImageURL;
+                        img.onload = function () {
+                            console.log(bigImageURL);
+                            $("div.img4load").append($(img));
+                        };
+                    });
+                }
+            );
+        }
+
+        $(function () {
+            let pid = getUrlParms("pid");
+            var data4Vue = {
+                uri: 'foreproduct',
+                product: {id: 0, name: ''},
+                buy: {num: ''},
+                propertyValues: []
+            };
+            var vue = new Vue({
+                el: '#workingArea',
+                data: data4Vue,
+                mounted: function () {
+                    this.getProduct(pid);
+                    // this.getPropertyValues(pid);
+                    productPageImgListener();
+                },
+                methods: {
+                    getProduct: function (pid) {
+                        let url = this.uri + "/" + pid;
+                        axios.get(url).then(function (response) {
+                            console.log("aaaaa");
+                            console.log(response);
+                            vue.product = response.data;
+                        });
+                    },
+                    getPropertyValues: function(pid) {
+                        let url = "forepropertyvalues/" + pid;
+                        axios.get(url).then(function (response) {
+                            console.log(response);
+                            vue.propertyValues = response.data;
+                            for(let pv in vue.propertyValues) {
+                                let value = pv.value;
+                                pv.value = value.substring(0, 10);
+                            }
+                        });
+                    },
+                    increaseNum: function () {
+                        vue.buy.num++;l
+                        if (vue.buy.num > vue.product.stock)
+                            vue.buy.num = vue.product.stock;
+                    },
+                    decreaseNum: function () {
+                        vue.buy.num--;
+                        if (vue.buy.num <= 0) {
+                            vue.buy.num = 1;
+                        }
+                    },
+                    addCartLink: function () {
+                        let url = "forechecklogin";
+                        axios.get(url).then(function (response) {
+                            console.log(response);
+                            if(response.data == true) {
+                                //todo:加入购物车
+                            }
+                        });
+                    }
+                }
+            });
+        });
+    </script>
     <div class="categoryPictureInProductPageDiv">
-        <img class="categoryPictureInProductPage" src="img/category/${product.category.id}.jpg">
+        <img class="categoryPictureInProductPage" :src="'img/category/' + product.category.id + '.jpg'">
     </div>
     <div th:replace="include/product/imgAndInfo::imgAndInfo"></div>
     <div th:replace="include/product/productReview::productReview"></div>
